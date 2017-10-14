@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicLong;
 
-public class Developer {
+public class Developer implements HaveID {
     private static final AtomicLong aLong = new AtomicLong(0);
     private final long id;
     private String firstName;

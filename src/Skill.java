@@ -1,7 +1,7 @@
 import java.io.Serializable;
 import java.util.concurrent.atomic.AtomicLong;
 
-public class Skill implements Serializable{
+public class Skill implements HaveID{
 
     private static final AtomicLong aLong = new AtomicLong(0);
     private final long id;

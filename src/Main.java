@@ -9,39 +9,84 @@ public class Main {
         Developer firstDeveloper = new Developer("Vadim", "Chemodurov",
                 "Junior Java Developer", 800);
         Developer secondDeveloper = new Developer("Leonid", "Malashenko",
-                "Junior C++ Developer", 790);
+                "Junior sql Developer", 790);
         Developer thirdDeveloper = new Developer("Valery", "Okhotnikov",
                 "Junior OpenGL Developer", 810);
-        Set<Skill> firstSkillSet = new HashSet<>();
-        firstSkillSet.add(new Skill("Java core"));
-        firstSkillSet.add(new Skill("Git"));
-        firstSkillSet.add(new Skill("SQL"));
-        firstDeveloper.setSkills(firstSkillSet);
 
-        StringBuilder skills = skillsForOutput(firstSkillSet);
+
+        Set<Skill> skillSet = new HashSet<>();
+        skillSet.add(new Skill("Java core"));
+        skillSet.add(new Skill("Git"));
+        skillSet.add(new Skill("SQL"));
+        firstDeveloper.setSkills(skillSet);
+
+        StringBuilder skills = skillsForOutput(skillSet);
 
         StringBuilder developerToFile = new StringBuilder(firstDeveloper.getId() + "," + firstDeveloper.getFirstName() + ","
                 + firstDeveloper.getLastName() + "," + firstDeveloper.getSpecialty() + "," +
                 skills + "," + firstDeveloper.getSalary() + "\n");
 
         StringBuilder skillsToFile = new StringBuilder();
-        for (Skill skill : firstSkillSet) {
+        for (Skill skill : skillSet) {
             skillsToFile.append(skill.getId() + ". " + skill.getName() + "\n");
         }
 
+        Team bankingTeam = new Team("Banking Team");
+        Team visitPageTeam = new Team("Visit Page Team");
+        Team eshoppingTeam = new Team("E-shopping team");
+        bankingTeam.addDeveloperIntoTeam(firstDeveloper);
+        bankingTeam.addDeveloperIntoTeam(secondDeveloper);
+        bankingTeam.addDeveloperIntoTeam(thirdDeveloper);
+        Set<Developer> developers = new HashSet<>();
+        developers.add(firstDeveloper);
+        developers.add(secondDeveloper);
+        developers.add(thirdDeveloper);
+
+        StringBuilder developersForOutput = skillsForOutput(developers);
+        StringBuilder teamToFile = new StringBuilder(bankingTeam.getId() + "," + bankingTeam.getName() + "," +
+                developersForOutput);
+
+        Project bankingProject = new Project("Banking Project");
+        Project visitSiteProject = new Project("Visit site project");
+        Project eshoppingProject = new Project("Ethernet shopping project");
+        bankingProject.addTeamIntoProject(bankingTeam);
+        Set<Team> teams = new HashSet<>();
+        teams.add(bankingTeam);
+        teams.add(visitPageTeam);
+        teams.add(eshoppingTeam);
+
+
+        StringBuilder teamsForOutput = skillsForOutput(teams);
+        StringBuilder projectToFile = new StringBuilder(bankingProject.getId() + ","
+                + bankingProject.getName() + "," + teamsForOutput);
+
+        Company usaCompany = new Company("Company from USA Inc.");
+        Company canadianCompany = new Company("Company from Canada Inc.");
+        Company australianCompany = new Company("Company from Australia Inc.");
+        usaCompany.addProjectForCompany(bankingProject);
+        Set<Project> projects = new HashSet<>();
+        projects.add(bankingProject);
+        projects.add(visitSiteProject);
+        projects.add(eshoppingProject);
+
+
+
+
         write(developerToFile, "developers.txt");
         write(skillsToFile, "skills.txt");
+        write(teamToFile, "teams.txt");
+        write(projectToFile, "projects.txt");
 
     }
 
-    private static StringBuilder skillsForOutput(Set<Skill> firstSkillSet) {
-        StringBuilder skills = new StringBuilder("{");
-        for (Skill skill : firstSkillSet){
-            skills.append(skill.getId() + ",");
+    private static <T extends HaveID > StringBuilder skillsForOutput(Set<T> entityes) {
+        StringBuilder entitiesToString = new StringBuilder("{");
+        for (T entity : entityes){
+            entitiesToString.append(entity.getId() + ",");
         }
-        skills.deleteCharAt(skills.length() - 1);
-        skills.append("}");
-        return skills;
+        entitiesToString.deleteCharAt(entitiesToString.length() - 1);
+        entitiesToString.append("}");
+        return entitiesToString;
     }
 
     static void write(StringBuilder toFile, String filePath) {

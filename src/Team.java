@@ -1,7 +1,7 @@
 import java.util.HashSet;
 import java.util.Set;
 
-public class Team {
+public class Team implements HaveID {
 
     private long id;
     private String name;

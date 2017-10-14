@@ -1,7 +1,7 @@
 import java.util.HashSet;
 import java.util.Set;
 
-public class Company {
+public class Company implements HaveID {
     private long id;
     private String name;
     private Set<Project> projects;
