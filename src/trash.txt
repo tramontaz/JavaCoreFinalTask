@@ -1,0 +1,97 @@
+private static StringBuilder companiesToFile(Company company) {
+        return new StringBuilder(company.getId() + "," + company.getName() + ","
+                + entityForOutput(company.getProjects()));
+    }
+
+    private static StringBuilder customerToFile(Customer customer) {
+        return new StringBuilder(customer.getId() + "," + customer.getFirstName() + ","
+                + customer.getLastName() + "," + customer.getAddress() + entityForOutput(customer.getProjects()));
+    }
+
+    private static StringBuilder projectToFile(Project project) {
+        return new StringBuilder(project.getId() + ","
+                + project.getName() + "," + entityForOutput(project.getTeams()) + "\n");
+    }
+
+    private static StringBuilder skillsToFile(Developer developer) {
+        StringBuilder skillsToFile = new StringBuilder();
+        for (Skill skill : developer.getSkills()) {
+            skillsToFile.append(skill.getId() + ". " + skill.getName() + "\n");
+        }
+        return skillsToFile;
+    }
+
+    private static StringBuilder teamToFile(Team team) {
+        return new StringBuilder(team.getId() + "," + team.getName() + "," +
+                entityForOutput(team.getDevelopers()) + "\n");
+    }
+
+    private static StringBuilder developerToFile(Developer developer) {
+        return new StringBuilder(developer.getId() + "," + developer.getFirstName() + ","
+                + developer.getLastName() + "," + developer.getSpecialty() + "," +
+                entityForOutput(developer.getSkills()) + "," + developer.getSalary() + "\n");
+    }
+
+
+    private static <T extends HaveID<HaveID>> StringBuilder entityForOutput(Set<T> entities) {
+        StringBuilder entitiesToString = new StringBuilder("{");
+        for (T entity : entities) {
+            entitiesToString.append(entity.getId() + ",");
+        }
+        entitiesToString.deleteCharAt(entitiesToString.length() - 1);
+        entitiesToString.append("}");
+        return entitiesToString;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+        firstDeveloper.addSkill(new Skill("Java core"));
+        firstDeveloper.addSkill(new Skill("Git"));
+        firstDeveloper.addSkill(new Skill("SQL"));
+
+        Skill cSharp = new Skill("C#");
+        secondDeveloper.addSkill(new Skill("Git"));
+        secondDeveloper.addSkill(new Skill("SQL"));
+
+        Team bankingTeam = new Team("Banking Team");
+        Team visitPageTeam = new Team("Visit Page Team");
+        Team eshoppingTeam = new Team("E-shopping team");
+
+        bankingTeam.addDeveloperIntoTeam(firstDeveloper);
+        bankingTeam.addDeveloperIntoTeam(secondDeveloper);
+        bankingTeam.addDeveloperIntoTeam(thirdDeveloper);
+
+        Project bankingProject = new Project("Banking Project");
+        Project visitSiteProject = new Project("Visit site project");
+        Project eshoppingProject = new Project("Ethernet shopping project");
+        bankingProject.addTeamIntoProject(bankingTeam);
+        bankingProject.addTeamIntoProject(visitPageTeam);
+        bankingProject.addTeamIntoProject(eshoppingTeam);
+
+
+        Company usaCompany = new Company("Company from USA Inc.");
+        Company canadianCompany = new Company("Company from Canada Inc.");
+        Company australianCompany = new Company("Company from Australia Inc.");
+
+        usaCompany.addProjectForCompany(bankingProject);
+        usaCompany.addProjectForCompany(visitSiteProject);
+        usaCompany.addProjectForCompany(eshoppingProject);
+
+        Customer usaCustomer = new Customer("Henry", "Wilson",
+                "11301 West Olympic Boulevard Apt. 100 LA CA 90064 USA");
+        Customer germanCustomer = new Customer("Anna", "Spatz",
+                "Berliner str. 55 Dusseldorf 40547 Deutschland");
+        Customer russianCustomer = new Customer("Ivan", "Ivanov",
+                "350053 RF Krasnodar region Krasnodar str. Krasnaya 156 apt. 27");
+        usaCustomer.addProjectToCustomer(eshoppingProject);
+        usaCustomer.addProjectToCustomer(bankingProject);
+        usaCustomer.addProjectToCustomer(visitSiteProject);

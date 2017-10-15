@@ -1,15 +1,31 @@
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicLong;
 
 public class Project implements HaveID {
-    private long id;
+    private static final AtomicLong aLong = new AtomicLong(0);
+    private final long id;
     private String name;
     private Set<Team> teams;
 
     public Project(String name) {
-        id++;
+        id = aLong.incrementAndGet();
         this.name = name;
         teams = new HashSet<>();
+    }
+
+    public Project(long id, String name, Set<Team> teams) {
+        this.id = id;
+        this.name = name;
+        this.teams = teams;
+    }
+
+    private StringBuilder getTeamsFromSet() {
+        StringBuilder teamsToString = new StringBuilder("{");
+        for (Team team : teams) teamsToString.append(team.getId() + ",");
+        teamsToString.deleteCharAt(teamsToString.length() - 1);
+        teamsToString.append("}");
+        return teamsToString;
     }
 
     void addTeamIntoProject(Team team) {
@@ -24,11 +40,21 @@ public class Project implements HaveID {
         return id;
     }
 
+    @Override
+    public StringBuilder getInfo() {
+        return new StringBuilder(getId() + ","
+                + getName() + "," + getTeamsFromSet() + "\n");
+    }
+
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Set<Team> getTeams() {
+        return teams;
     }
 }
