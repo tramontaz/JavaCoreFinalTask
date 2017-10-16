@@ -1,4 +1,0 @@
-4,C#
-1,Java core
-2,Git
-3,SQL

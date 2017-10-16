@@ -1,7 +1,7 @@
 import java.io.*;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 import static java.lang.Long.*;
@@ -16,19 +16,18 @@ public class Main {
                 "Junior OpenGL Developer", 810);
 
 
-
         Skill javaCore = new Skill("Java core");
         Skill git = new Skill("Git");
         Skill sql = new Skill("SQL");
         Skill cSharp = new Skill("C#");
         Standard skills = new Standard(new HashSet<>());
-        skills.addSkillIntoSkillset(javaCore);
-        skills.addSkillIntoSkillset(git);
-        skills.addSkillIntoSkillset(sql);
+        skills.addSkillIntoEntitySet(javaCore);
+        skills.addSkillIntoEntitySet(git);
+        skills.addSkillIntoEntitySet(sql);
 
-        firstDeveloper.addSkill((Skill) skills.getSkillFromSkillSet(git.getId()));
-        firstDeveloper.addSkill((Skill) skills.getSkillFromSkillSet(javaCore.getId()));
-        firstDeveloper.addSkill((Skill) skills.getSkillFromSkillSet(git.getId()));
+        firstDeveloper.addSkill((Skill) skills.getSkillFromEntitySet(git.getId()));
+        firstDeveloper.addSkill((Skill) skills.getSkillFromEntitySet(javaCore.getId()));
+        firstDeveloper.addSkill((Skill) skills.getSkillFromEntitySet(git.getId()));
 
 
         Standard developers = new Standard(new HashSet<>());
@@ -36,20 +35,15 @@ public class Main {
         Standard projects = new Standard(new HashSet<>());
 
 
-
-
-
 //        create(secondDeveloper);
         create(firstDeveloper);
 //        create(thirdDeveloper);
-        create(cSharp);
-        create(javaCore);
-        create(git);
-        create(sql);
+//        create(cSharp);
+//        create(javaCore);
+//        create(git);
+//        create(sql);
 
-        firstDeveloper.addSkill(javaCore);
-        firstDeveloper.addSkill(git);
-        firstDeveloper.addSkill(sql);
+//        write(firstDeveloper.getInfo(), "developers.txt");
 
 
 //        create(eshoppingTeam);
@@ -57,28 +51,31 @@ public class Main {
 //        create(usaCompany);
 //        create(usaCustomer);
 
-        HaveID skillThatWasRead = read("skills.txt", 4L);
-        HaveID skillThatWasRead2 = read("developers.txt", 1L);
-        System.out.println(firstDeveloper.getInfo());
-
-
+        System.out.println((read("developers.txt", 1L, skills)).getInfo());
 
 
     }
 
-    private static Set<Skill> restoreSkills(HashSet<HaveID> standards){
-        char open = '{';
-        char close = '}';
-        String substring = HaveID.getInfo().substring((int) open, (int) close);
-        String[] stringSkills = substring.split("#");
-        Set<Skill> restoredSkills = new HashSet<>();
-        int x = 0;
-        for (HaveID standart : standards) {
-            if (standart.equals(Long.parseLong(stringSkills[x]))) {
-                restoredSkills.add((Skill) standart);
+    private static Set<HaveID> restoreSet(String entityToString, Standard standard) {
+        Set<HaveID> restoredEntity = new HashSet<>();
+        String[] parsedString = entityToString.split("#");
+        Long[] ids = new Long[parsedString.length];
+        for (int i = 0; i < ids.length; i++) {
+            ids[i] = Long.parseLong(parsedString[i]);
+        }
+
+        Set<HaveID> entitySet = standard.getEntitySet();
+        for (HaveID anEntitySet : entitySet) {
+            long g = anEntitySet.getId();
+            for (Long id : ids) {
+                if (g == id) {
+                    restoredEntity.add(standard.getSkillFromEntitySet(g));
+                }
             }
-        } return restoredSkills;
+        }
+        return restoredEntity;
     }
+
 
     private static void write(StringBuilder toFile, String filePath) {
         try {
@@ -91,7 +88,7 @@ public class Main {
     }
 
     private static HaveID read(String filePath, Long id, Standard standard) {
-        HaveID haveID = null;
+        HaveID haveID;
 
         StringBuilder stringBuilder = new StringBuilder();
         try {
@@ -109,40 +106,49 @@ public class Main {
         }
 
         String[] entityThatWasGot = stringBuilder.toString().split(",");
+        String subString = stringBuilder.substring(stringBuilder.indexOf("{") + 1, stringBuilder.indexOf("}"));
 
-        if (filePath.equals("skills.txt")) {
-            haveID = new Skill(parseLong(entityThatWasGot[0]), entityThatWasGot[1]);
-        } else if (filePath.equals("companies.txt")){
-            haveID = new Company(parseLong(entityThatWasGot[0]), entityThatWasGot[1],
-                    new HashSet<Project>());
-        } else if (filePath.equals("customers.txt")){
-            haveID = new Customer(parseLong(entityThatWasGot[0]), entityThatWasGot[1], entityThatWasGot[2],
-                    entityThatWasGot[1], new HashSet<>());
-        } else if (filePath.equals("developers.txt")){
-            haveID = new Developer(parseLong(entityThatWasGot[0]), entityThatWasGot[1], entityThatWasGot[2], entityThatWasGot[3],
-                    , new BigDecimal(entityThatWasGot[5]));
-        } else if (filePath.equals("projects.txt")){
-            haveID = new Project(parseLong(entityThatWasGot[0]), entityThatWasGot[1], new HashSet<>());
-        } else if (filePath.equals("teams.txt")){
-            haveID = new Team(parseLong(entityThatWasGot[0]),entityThatWasGot[1], new HashSet<>());
+        switch (filePath) {
+            case "skills.txt":
+                haveID = new Skill(parseLong(entityThatWasGot[0]), entityThatWasGot[1]);
+                break;
+            case "companies.txt":
+                haveID = new Company(parseLong(entityThatWasGot[0]), entityThatWasGot[1],
+                        new HashSet<>());
+                break;
+            case "customers.txt":
+                haveID = new Customer(parseLong(entityThatWasGot[0]), entityThatWasGot[1], entityThatWasGot[2],
+                        entityThatWasGot[1], new HashSet<>());
+                break;
+            case "developers.txt":
+                haveID = new Developer(parseLong(entityThatWasGot[0]), entityThatWasGot[1], entityThatWasGot[2],
+                        entityThatWasGot[3], restoreSet(subString, standard), new BigDecimal(entityThatWasGot[5]));
+                break;
+            case "projects.txt":
+                haveID = new Project(parseLong(entityThatWasGot[0]), entityThatWasGot[1], new HashSet<>());
+                break;
+            case "teams.txt":
+                haveID = new Team(parseLong(entityThatWasGot[0]), entityThatWasGot[1], new HashSet<>());
+                break;
+            default:
+                return null;
         }
-        else return null;
         return haveID;
     }
 
-    private static boolean create(HaveID entity){
+    private static boolean create(HaveID entity) {
         String filePath;
-        if (entity instanceof Company){
+        if (entity instanceof Company) {
             filePath = "companies.txt";
-        } else if (entity instanceof Customer){
+        } else if (entity instanceof Customer) {
             filePath = "customers.txt";
-        } else if (entity instanceof Developer){
+        } else if (entity instanceof Developer) {
             filePath = "developers.txt";
-        } else if (entity instanceof Project){
+        } else if (entity instanceof Project) {
             filePath = "projects.txt";
-        } else if (entity instanceof Skill){
+        } else if (entity instanceof Skill) {
             filePath = "skills.txt";
-        } else if (entity instanceof Team){
+        } else if (entity instanceof Team) {
             filePath = "teams.txt";
         } else {
             filePath = "unknownEntity.txt";

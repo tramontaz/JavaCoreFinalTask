@@ -3,23 +3,23 @@ import java.util.Set;
 public class Standard {
     private Set<HaveID> standards;
 
-    public Standard(Set<HaveID> skillSet) {
-        this.standards = skillSet;
+    public Standard(Set<HaveID> entitySet) {
+        this.standards = entitySet;
     }
 
-    public Set<HaveID> getSkillSet() {
+    public Set<HaveID> getEntitySet() {
         return standards;
     }
 
-    public void setSkillSet(Set<HaveID> skillSet) {
-        this.standards = skillSet;
+    public void setEntitySet(Set<HaveID> entitySet) {
+        this.standards = entitySet;
     }
-    
-    public void addSkillIntoSkillset(Skill skill) {
-        standards.add(skill);
+
+    public void addSkillIntoEntitySet(HaveID haveID) {
+        standards.add(haveID);
     }
-    
-    public HaveID getSkillFromSkillSet(long id) {
+
+    public HaveID getSkillFromEntitySet(long id) {
         HaveID standardThatWillBeReturn = null;
         for (HaveID standard : standards) {
             if (standard.getId() == id) standardThatWillBeReturn = standard;
