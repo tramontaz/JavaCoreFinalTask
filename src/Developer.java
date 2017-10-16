@@ -34,14 +34,6 @@ public class Developer implements HaveID {
         return id;
     }
 
-    private StringBuilder getSkillsFromSet() {
-        StringBuilder skillsToString = new StringBuilder("{");
-        for (HaveID skill : skills) skillsToString.append(skill.getId() + ",");
-        skillsToString.deleteCharAt(skillsToString.length() - 1);
-        skillsToString.append("}");
-        return skillsToString;
-    }
-
     private StringBuilder skillsFromSet() {
         StringBuilder stringBuilder = new StringBuilder("{");
         for (HaveID skill : skills) {
