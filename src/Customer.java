@@ -8,7 +8,7 @@ public class Customer implements HaveID {
     private String firstName;
     private String lastName;
     private String address;
-    private Set<Project> projects;
+    private Set<HaveID> projects;
 
     public Customer(String firstName, String lastName, String address) {
         id = aLong.incrementAndGet();
@@ -18,7 +18,7 @@ public class Customer implements HaveID {
         projects = new HashSet<>();
     }
 
-    public Customer(long id, String firstName, String lastName, String address, Set<Project> projects) {
+    public Customer(long id, String firstName, String lastName, String address, Set<HaveID> projects) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -28,7 +28,7 @@ public class Customer implements HaveID {
 
     private StringBuilder getProjectsFromSet() {
         StringBuilder projectsToString = new StringBuilder("{");
-        for (Project project : projects) projectsToString.append(project.getId() + ",");
+        for (HaveID project : projects) projectsToString.append(project.getId() + ",");
         projectsToString.deleteCharAt(projectsToString.length() - 1);
         projectsToString.append("}");
         return projectsToString;
@@ -66,7 +66,7 @@ public class Customer implements HaveID {
         this.address = address;
     }
 
-    public Set<Project> getProjects() {
+    public Set<HaveID> getProjects() {
         return projects;
     }
 

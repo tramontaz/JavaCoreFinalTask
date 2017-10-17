@@ -1,7 +1,6 @@
 import java.io.*;
 import java.math.BigDecimal;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
 import static java.lang.Long.*;
@@ -35,13 +34,10 @@ public class Main {
         Standard projects = new Standard(new HashSet<>());
 
 
-//        create(secondDeveloper);
+        create(secondDeveloper);
         create(firstDeveloper);
-//        create(thirdDeveloper);
-//        create(cSharp);
-//        create(javaCore);
-//        create(git);
-//        create(sql);
+        create(thirdDeveloper);
+
 
 //        write(firstDeveloper.getInfo(), "developers.txt");
 
@@ -114,21 +110,21 @@ public class Main {
                 break;
             case "companies.txt":
                 haveID = new Company(parseLong(entityThatWasGot[0]), entityThatWasGot[1],
-                        new HashSet<>());
+                        restoreSet(subString, standard));
                 break;
             case "customers.txt":
                 haveID = new Customer(parseLong(entityThatWasGot[0]), entityThatWasGot[1], entityThatWasGot[2],
-                        entityThatWasGot[1], new HashSet<>());
+                        entityThatWasGot[1], restoreSet(subString, standard));
                 break;
             case "developers.txt":
                 haveID = new Developer(parseLong(entityThatWasGot[0]), entityThatWasGot[1], entityThatWasGot[2],
                         entityThatWasGot[3], restoreSet(subString, standard), new BigDecimal(entityThatWasGot[5]));
                 break;
             case "projects.txt":
-                haveID = new Project(parseLong(entityThatWasGot[0]), entityThatWasGot[1], new HashSet<>());
+                haveID = new Project(parseLong(entityThatWasGot[0]), entityThatWasGot[1], restoreSet(subString, standard));
                 break;
             case "teams.txt":
-                haveID = new Team(parseLong(entityThatWasGot[0]), entityThatWasGot[1], new HashSet<>());
+                haveID = new Team(parseLong(entityThatWasGot[0]), entityThatWasGot[1], restoreSet(subString, standard));
                 break;
             default:
                 return null;

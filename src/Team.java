@@ -7,7 +7,7 @@ public class Team implements HaveID {
     private static final AtomicLong aLong = new AtomicLong(0);
     private final long id;
     private String name;
-    private Set<Developer> developers;
+    private Set<HaveID> developers;
 
     public Team(String name) {
         id = aLong.incrementAndGet();
@@ -15,7 +15,7 @@ public class Team implements HaveID {
         this.developers = new HashSet<>();
     }
 
-    public Team(long id, String name, Set<Developer> developers) {
+    public Team(long id, String name, Set<HaveID> developers) {
         this.id = id;
         this.name = name;
         this.developers = developers;
@@ -23,7 +23,7 @@ public class Team implements HaveID {
 
     private StringBuilder getDevelopersFromSet() {
         StringBuilder developersToString = new StringBuilder("{");
-        for (Developer developer : developers) developersToString.append(developer.getId() + ",");
+        for (HaveID developer : developers) developersToString.append(developer.getId() + ",");
         developersToString.deleteCharAt(developersToString.length() - 1);
         developersToString.append("}");
         return developersToString;
@@ -51,7 +51,7 @@ public class Team implements HaveID {
         return name;
     }
 
-    public Set<Developer> getDevelopers() {
+    public Set<HaveID> getDevelopers() {
         return developers;
     }
 

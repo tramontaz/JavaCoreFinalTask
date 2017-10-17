@@ -6,7 +6,7 @@ public class Company implements HaveID {
     private static final AtomicLong aLong = new AtomicLong(0);
     private final long id;
     private String name;
-    private Set<Project> projects;
+    private Set<HaveID> projects;
 
     public Company(String name) {
         id = aLong.incrementAndGet();
@@ -14,7 +14,7 @@ public class Company implements HaveID {
         projects = new HashSet<>();
     }
 
-    public Company(long id, String name, Set<Project> projects) {
+    public Company(long id, String name, Set<HaveID> projects) {
         this.id = id;
         this.name = name;
         this.projects = projects;
@@ -22,7 +22,7 @@ public class Company implements HaveID {
 
     private StringBuilder getProjectsFromSet() {
         StringBuilder projectsToString = new StringBuilder("{");
-        for (Project project : projects) projectsToString.append(project.getId() + ",");
+        for (HaveID project : projects) projectsToString.append(project.getId() + ",");
         projectsToString.deleteCharAt(projectsToString.length() - 1);
         projectsToString.append("}");
         return projectsToString;
@@ -54,7 +54,7 @@ public class Company implements HaveID {
         this.name = name;
     }
 
-    public Set<Project> getProjects() {
+    public Set<HaveID> getProjects() {
         return projects;
     }
 }
