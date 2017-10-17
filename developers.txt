@@ -1,1 +1,0 @@
-1,Vadim,Chemodurov,Junior Java Developer,{1#2},800
