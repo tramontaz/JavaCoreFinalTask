@@ -8,7 +8,7 @@ import java.util.Set;
 public interface SkillDAO {
     void save(Skill skill); //create
     void update(Skill skill);
-    void delete(long id) throws IOException;
+    void delete(long id);
     Skill getById(long id);
     Set<Skill> getAll();
 }

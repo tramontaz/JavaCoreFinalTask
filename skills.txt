@@ -1,0 +1,7 @@
+4,Maven
+1,Java core
+2,SQL
+3,GIT
+5,Hibernate
+6,Spring
+7,HTML

@@ -10,14 +10,10 @@ import java.util.Set;
 public class JavaIOSkillDAOImpl implements SkillDAO {
 
     private String filePath = "skills.txt";
-    private Developer developer;
-    private Skill skill;
     private char split;
 
-    public JavaIOSkillDAOImpl(String filePath, Developer developer, Skill skill) {
+    public JavaIOSkillDAOImpl(String filePath) {
         this.filePath = filePath;
-        this.developer = developer;
-        this.skill = skill;
         this.split = ',';
     }
 

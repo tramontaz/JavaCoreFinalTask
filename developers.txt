@@ -1,0 +1,2 @@
+2,Petr,Petrov,Java Middle Developer,{1#4#6#3#5#2},1800
+3,Klim,Avakov,Java Middle-sec-grade Developer,{1#4#6#3#5#2#7},1950
