@@ -17,16 +17,29 @@ public class JavaIODeveloperDAOImpl implements DeveloperDAO {
         this.split = ',';
     }
 
-    private Skill getSkillFromSet(Set<Skill> set, long id) { //говнокод - костыль
-        Skill skillThatWillBeReturn = null;
-        for (Skill standard : set) {
-            if (standard.getId() == id) skillThatWillBeReturn = standard;
+    private Skill getSkillById(long id) {
+        Skill skillThatWillBeReturned = null;
+
+        try {
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream("skills.txt")));
+            String line;
+            String[] skillInStringArray = null;
+            while ((line = bufferedReader.readLine()) != null) {
+                if (line.startsWith(String.valueOf(id))) {
+                    skillInStringArray = line.split(String.valueOf(split));
+                    break;
+                }
+            }
+            bufferedReader.close();
+            skillThatWillBeReturned = new Skill(Long.parseLong(skillInStringArray[0]), skillInStringArray[1]);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        return skillThatWillBeReturn;
+
+        return skillThatWillBeReturned;
     }
 
-    private Set<Skill> restoredSkills(String line) {  //еще один участок говнокода
-
+    private Set<Skill> restoredSkills(String line) {
         String subString = line.substring(line.indexOf("{") + 1, line.indexOf("}"));
         String[] developersInStringArray = subString.split("#");
         Long[] ids = new Long[developersInStringArray.length];
@@ -34,18 +47,11 @@ public class JavaIODeveloperDAOImpl implements DeveloperDAO {
             ids[i] = Long.parseLong(developersInStringArray[i]);
         }
 
-        Set<Skill> standardSkills = new JavaIOSkillDAOImpl("skills.txt").getAll();
         Set<Skill> restoredSkills = new HashSet<>();
 
-        for (Skill skill : standardSkills) {
-            long tempId = skill.getId();
-            for (Long id : ids) {
-                if (tempId == id) {
-                    restoredSkills.add(getSkillFromSet(standardSkills, tempId));
-                }
-            }
+        for (Long id : ids) {
+            restoredSkills.add(getSkillById(id));
         }
-
         return restoredSkills;
     }
 

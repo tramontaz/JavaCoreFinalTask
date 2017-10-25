@@ -1,14 +1,14 @@
 package model;
 
+
 import java.util.Set;
 
-public class Team {
+public class Company {
     private long id;
     private String name;
-    private Set<Developer> set;
+    private Set<Project> set;
 
-
-    public Team(long id, String name, Set<Developer> set) {
+    public Company(long id, String name, Set<Project> set) {
         this.id = id;
         this.name = name;
         this.set = set;
@@ -30,11 +30,11 @@ public class Team {
         this.name = name;
     }
 
-    public Set<Developer> getSet() {
+    public Set<Project> getSet() {
         return set;
     }
 
-    public void setSet(Set<Developer> set) {
+    public void setSet(Set<Project> set) {
         this.set = set;
     }
 }
