@@ -75,7 +75,7 @@ public class Developer {
                 "\nfirstName='" + firstName +
                 "\nlastName='" + lastName +
                 "\nspecialty='" + specialty +
-                "\nset=" + set +
+                "\nSkill set=" + set +
                 "\nsalary=" + salary;
     }
 }

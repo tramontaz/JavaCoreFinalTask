@@ -1,12 +1,14 @@
 import dao.JavaIODeveloperDAOImpl;
+import dao.JavaIOTeamDAOImpl;
 import model.Developer;
 import model.Skill;
+import model.Team;
 
 import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 
-public class DeveloperDAOTest {
+public class TeamDAOTest {
     public static void main(String[] args) {
         Skill javaCore = new Skill(1, "Java core");
         Skill sql = new Skill(2, "SQL");
@@ -50,52 +52,67 @@ public class DeveloperDAOTest {
 
         Developer klim = new Developer(3, "Klim", "Avakov", "Java Middle-sec-grade Developer",
                 skillsOfKlim, new BigDecimal(1950));
+
         Developer john = new Developer(4, "John", "Weak", "Java Middle Developer",
                 skillsOfPetr, new BigDecimal(1800));
 
         Developer mary = new Developer(5, "Mary", "Key", "Java Middle-sec-grade Developer",
                 skillsOfKlim, new BigDecimal(1950));
 
-        System.out.println(developer.toString());
+
+        Set<Developer> rusTeam = new HashSet<>();
+        rusTeam.add(developer);
+        rusTeam.add(petr);
+        rusTeam.add(klim);
+
+        Set<Developer> usTeam = new HashSet<>();
+        usTeam.add(john);
+        usTeam.add(mary);
+
+
+        Team firstTeam = new Team(1, "First Team", rusTeam);
+        Team secondTeam = new Team(2, "Second Team", usTeam);
+
+
+        JavaIOTeamDAOImpl javaIOTeamDAO = new JavaIOTeamDAOImpl("teams.txt");
+
+        System.out.println(firstTeam);
         System.out.println();
+        System.out.println(secondTeam);
+
+        System.out.println("\n========================================================================================\n");
+
+        javaIOTeamDAO.save(firstTeam);
+        javaIOTeamDAO.save(secondTeam);
+
+        System.out.println("\n========================================================================================\n");
+
+        firstTeam.setName("Team from Russia");
+        rusTeam.remove(developer);
+        firstTeam.setSet(rusTeam);
+        System.out.println("The first team had changed: ");
+        System.out.println(firstTeam);
+        javaIOTeamDAO.update(firstTeam);
+
+        System.out.println("\n========================================================================================\n");
+
+        javaIOTeamDAO.delete(1);
+
+        System.out.println("\n========================================================================================\n");
+
+        Team restoredTeam = javaIOTeamDAO.getById(2L);
+        System.out.println("Get team by ID: ");
+        System.out.println(restoredTeam);
+
+        System.out.println("\n========================================================================================\n");
 
 
-        JavaIODeveloperDAOImpl javaIODeveloperDAO = new JavaIODeveloperDAOImpl("developers.txt");
+        Set<Team> restoredTeams = javaIOTeamDAO.getAll();
+        System.out.println("Get all teams: ");
+        for (Team team : restoredTeams) System.out.println(team);
 
-        javaIODeveloperDAO.save(developer);
 
 
-        System.out.println("\n===============================================================================\n");
-
-        developer.setFirstName("Konchita");
-        javaIODeveloperDAO.update(developer);
-        System.out.println(developer.toString());
-
-        System.out.println("\n===============================================================================\n");
-
-        javaIODeveloperDAO.save(petr);
-        javaIODeveloperDAO.save(klim);
-        javaIODeveloperDAO.save(john);
-        javaIODeveloperDAO.save(mary);
-        javaIODeveloperDAO.delete(1);
-
-        System.out.println("Developer with id = 3:\n");
-        Developer restoredDeveloper = javaIODeveloperDAO.getById(3);
-        System.out.println(restoredDeveloper);
-
-        System.out.println("\n===============================================================================\n");
-
-        System.out.println("All developers:");
-
-        for (Developer developer1 : javaIODeveloperDAO.getAll()) {
-            System.out.println(developer1);
-        }
-
-        javaIODeveloperDAO.save(petr);
-        javaIODeveloperDAO.save(klim);
-        javaIODeveloperDAO.save(john);
-        javaIODeveloperDAO.save(mary);
-        javaIODeveloperDAO.save(developer);
 
     }
 }

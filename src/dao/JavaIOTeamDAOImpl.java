@@ -2,17 +2,18 @@ package dao;
 
 import model.Developer;
 import model.Skill;
+import model.Team;
 
 import java.io.*;
 import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 
-public class JavaIODeveloperDAOImpl implements DeveloperDAO {
-    private String filePath = "developers.txt";
+public class JavaIOTeamDAOImpl implements TeamDAO {
+    private String filePath = "teams.txt";
     private char split;
 
-    public JavaIODeveloperDAOImpl(String filePath) {
+    public JavaIOTeamDAOImpl(String filePath) {
         this.filePath = filePath;
         this.split = ',';
     }
@@ -55,113 +56,11 @@ public class JavaIODeveloperDAOImpl implements DeveloperDAO {
         return restoredSkills;
     }
 
-    @Override
-    public void save(Developer developer) {
-        File file = new File(filePath);
-        if (!file.exists()) {
-            try {
-                file.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        StringBuilder setSkillsToString = new StringBuilder("{");   //Displays a set of skills as a string
-        for (Skill skill : developer.getSet()) {
-            setSkillsToString.append(skill.getId() + "#");
-        }
-        setSkillsToString.deleteCharAt(setSkillsToString.length() - 1);
-        setSkillsToString.append("}");
-
-        StringBuilder developerToString = new StringBuilder(developer.getId() + String.valueOf(split) +
-                developer.getFirstName() + String.valueOf(split) + developer.getLastName() + String.valueOf(split) +
-                developer.getSpecialty() + String.valueOf(split) + setSkillsToString + String.valueOf(split) +
-                developer.getSalary() + "\n");
-        StringBuilder stringBuilder = new StringBuilder();
-        try {
-            String line;
-            String idString = String.valueOf(developer.getId());
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
-            while ((line = bufferedReader.readLine()) != null) {
-                if (line.startsWith(idString)) {
-                    stringBuilder.append(line);
-                }
-            }
-            bufferedReader.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        if (stringBuilder.toString().isEmpty()) {
-            try {
-                BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file, true));
-                bufferedWriter.write(developerToString.toString());
-                bufferedWriter.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    @Override
-    public void update(Developer developer) {
-//        StringBuilder setSkillsToString = new StringBuilder("{");   //Displays a set of skills as a string
-//        for (Skill skill : developer.getSet()) {
-//            setSkillsToString.append(skill.getId() + "#");
-//        }
-//        setSkillsToString.deleteCharAt(setSkillsToString.length() - 1);
-//        setSkillsToString.append("}");
-//
-//        StringBuilder developerToString = new StringBuilder(developer.getId() + String.valueOf(split) +
-//                developer.getFirstName() + String.valueOf(split) + developer.getLastName() + String.valueOf(split) +
-//                developer.getSpecialty() + String.valueOf(split) + setSkillsToString + String.valueOf(split) +
-//                developer.getSalary() + "\n");
-        try {
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(filePath)));
-            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(filePath, true));
-            String line;
-            while ((line = bufferedReader.readLine()) != null) {
-                if (line.startsWith(String.valueOf(developer.getId()))) {
-                    delete(developer.getId());
-                }
-                save(developer);
-            }
-            bufferedReader.close();
-            bufferedWriter.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void delete(long id) {
-        File developers = new File(filePath);
-        File newDevelopers = new File("temp.txt");
-
-        try {
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(developers)));
-            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(newDevelopers, true));
-            String line;
-            while ((line = bufferedReader.readLine()) != null) {
-                if (!line.startsWith(String.valueOf(id))) {
-                    bufferedWriter.write(line);
-                    bufferedWriter.newLine();
-                }
-            }
-            bufferedReader.close();
-            bufferedWriter.close();
-            developers.delete();
-            newDevelopers.renameTo(developers);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public Developer getById(long id) {
+    private Developer getDeveloperById(long id) {
         Developer developerThatWillBeReturned = null;
 
         try {
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(filePath)));
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream("developers.txt")));
             String line;
             String[] developerInStringArray = null;
             while ((line = bufferedReader.readLine()) != null) {
@@ -181,24 +80,153 @@ public class JavaIODeveloperDAOImpl implements DeveloperDAO {
         return developerThatWillBeReturned;
     }
 
-    @Override
-    public Set<Developer> getAll() {
-        Set<Developer> developers = new HashSet<>();
+    private Set<Developer> restoredDevelopers(String line) {
+        String subString = line.substring(line.indexOf("{") + 1, line.indexOf("}"));
+        String[] developersInStringArray = subString.split("#");
+        Long[] ids = new Long[developersInStringArray.length];
+        for (int i = 0; i < ids.length; i++) {
+            ids[i] = Long.parseLong(developersInStringArray[i]);
+        }
 
+        Set<Developer> restoredDevelopers = new HashSet<>();
+
+        for (Long id : ids) {
+            restoredDevelopers.add(getDeveloperById(id));
+        }
+        return restoredDevelopers;
+    }
+
+
+
+    @Override
+    public void save(Team team) {
+        File file = new File(filePath);
+        if (!file.exists()) {
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        StringBuilder setDevelopersToString = new StringBuilder("{");   //Displays a set of skills as a string
+        for (Developer developer : team.getSet()) {
+            setDevelopersToString.append(developer.getId() + "#");
+        }
+        setDevelopersToString.deleteCharAt(setDevelopersToString.length() - 1);
+        setDevelopersToString.append("}");
+
+        StringBuilder teamToString = new StringBuilder(team.getId() + String.valueOf(split) +
+                team.getName() + String.valueOf(split) + setDevelopersToString + "\n");
+        StringBuilder stringBuilder = new StringBuilder();
         try {
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(filePath)));
             String line;
-            String[] developersInArray;
+            String idString = String.valueOf(team.getId());
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
             while ((line = bufferedReader.readLine()) != null) {
-                developersInArray = line.split(String.valueOf(split));
-                developers.add(new Developer(Long.parseLong(developersInArray[0]),
-                        developersInArray[1], developersInArray[2], developersInArray[3],
-                        restoredSkills(developersInArray[4]), new BigDecimal(developersInArray[5])));
+                if (line.startsWith(idString)) {
+                    stringBuilder.append(line);
+                }
             }
             bufferedReader.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return developers;
+        if (stringBuilder.toString().isEmpty()) {
+            try {
+                BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file, true));
+                bufferedWriter.write(teamToString.toString());
+                bufferedWriter.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @Override
+    public void update(Team team) {
+        try {
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(filePath)));
+            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(filePath, true));
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                if (line.startsWith(String.valueOf(team.getId()))) {
+                    delete(team.getId());
+                }
+                save(team);
+            }
+            bufferedReader.close();
+            bufferedWriter.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void delete(long id) {
+        File teams = new File(filePath);
+        File newTeams = new File("temp.txt");
+
+        try {
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(teams)));
+            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(newTeams, true));
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                if (!line.startsWith(String.valueOf(id))) {
+                    bufferedWriter.write(line);
+                    bufferedWriter.newLine();
+                }
+            }
+            bufferedReader.close();
+            bufferedWriter.close();
+            teams.delete();
+            newTeams.renameTo(teams);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public Team getById(long id) {
+        Team teamThatWillBeReturned = null;
+
+        try {
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(filePath)));
+            String line;
+            String[] teamInStringArray = null;
+            while ((line = bufferedReader.readLine()) != null) {
+                if (line.startsWith(String.valueOf(id))) {
+                    teamInStringArray = line.split(String.valueOf(split));
+                    break;
+                }
+            }
+            bufferedReader.close();
+            teamThatWillBeReturned = new Team(Long.parseLong(teamInStringArray[0]),
+                    teamInStringArray[1], restoredDevelopers(teamInStringArray[2]));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return teamThatWillBeReturned;
+    }
+
+    @Override
+    public Set<Team> getAll() {
+        Set<Team> teams = new HashSet<>();
+
+        try {
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(filePath)));
+            String line;
+            String[] teamInStringArray;
+            while ((line = bufferedReader.readLine()) != null) {
+                teamInStringArray = line.split(String.valueOf(split));
+                teams.add(new Team(Long.parseLong(teamInStringArray[0]),
+                        teamInStringArray[1], restoredDevelopers(teamInStringArray[2])));
+            }
+            bufferedReader.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return teams;
     }
 }

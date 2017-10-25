@@ -37,4 +37,11 @@ public class Team {
     public void setSet(Set<Developer> set) {
         this.set = set;
     }
+
+    @Override
+    public String toString() {
+        return "id=" + id +
+                "\nname=" + name +
+                "\nDevelopers set=" + set;
+    }
 }
