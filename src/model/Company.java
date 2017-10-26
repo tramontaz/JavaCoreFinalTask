@@ -37,4 +37,13 @@ public class Company {
     public void setSet(Set<Project> set) {
         this.set = set;
     }
+
+    @Override
+    public String toString() {
+        return "Company{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", set=" + set +
+                '}';
+    }
 }

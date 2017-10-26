@@ -56,4 +56,15 @@ public class Customer {
     public void setSet(Set<Project> set) {
         this.set = set;
     }
+
+    @Override
+    public String toString() {
+        return "Customer{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", address='" + address + '\'' +
+                ", set=" + set +
+                '}';
+    }
 }

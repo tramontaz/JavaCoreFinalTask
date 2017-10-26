@@ -36,4 +36,13 @@ public class Project {
     public void setSet(Set<Team> set) {
         this.set = set;
     }
+
+    @Override
+    public String toString() {
+        return "Project{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", set=" + set +
+                '}';
+    }
 }
