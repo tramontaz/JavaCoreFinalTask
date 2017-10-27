@@ -10,7 +10,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class JavaIOTeamDAOImpl implements TeamDAO {
-    private String filePath = "teams.txt";
+    private String filePath;
     private char split;
 
     public JavaIOTeamDAOImpl(String filePath) {
@@ -22,7 +22,8 @@ public class JavaIOTeamDAOImpl implements TeamDAO {
         Skill skillThatWillBeReturned = null;
 
         try {
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream("skills.txt")));
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(
+                    "/home/dragon/IdeaProjects/JavaCoreFinalTask/src/resources/skills.txt")));
             String line;
             String[] skillInStringArray = null;
             while ((line = bufferedReader.readLine()) != null) {
@@ -60,7 +61,8 @@ public class JavaIOTeamDAOImpl implements TeamDAO {
         Developer developerThatWillBeReturned = null;
 
         try {
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream("developers.txt")));
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(
+                    "/home/dragon/IdeaProjects/JavaCoreFinalTask/src/resources/developers.txt")));
             String line;
             String[] developerInStringArray = null;
             while ((line = bufferedReader.readLine()) != null) {
@@ -165,7 +167,7 @@ public class JavaIOTeamDAOImpl implements TeamDAO {
     @Override
     public void delete(long id) {
         File teams = new File(filePath);
-        File newTeams = new File("temp.txt");
+        File newTeams = new File("/home/dragon/IdeaProjects/JavaCoreFinalTask/src/resources/temp.txt");
 
         try {
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(teams)));

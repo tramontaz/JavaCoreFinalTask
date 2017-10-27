@@ -1,6 +1,7 @@
-import dao.JavaIOProjectDAOImpl;
+package test;
+
+import dao.JavaIOTeamDAOImpl;
 import model.Developer;
-import model.Project;
 import model.Skill;
 import model.Team;
 
@@ -8,7 +9,7 @@ import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 
-public class ProjectDAOTest {
+public class TeamDAOTest {
     public static void main(String[] args) {
         Skill javaCore = new Skill(1, "Java core");
         Skill sql = new Skill(2, "SQL");
@@ -42,6 +43,8 @@ public class ProjectDAOTest {
         skillsOfKlim.add(html);
 
 
+
+
         Developer developer = new Developer(1, "Ivan", "Ivanov", "Java Junior Developer",
                 skills, new BigDecimal(800));
 
@@ -70,74 +73,58 @@ public class ProjectDAOTest {
 
         Team firstTeam = new Team(1, "First Team", rusTeam);
         Team secondTeam = new Team(2, "Second Team", usTeam);
+
+
+        JavaIOTeamDAOImpl javaIOTeamDAO = new JavaIOTeamDAOImpl("/home/dragon/IdeaProjects/JavaCoreFinalTask/src/resources/teams.txt");
+
+        System.out.println(firstTeam);
+        System.out.println();
+        System.out.println(secondTeam);
+
+        System.out.println("\n========================================================================================\n");
+
+        javaIOTeamDAO.save(firstTeam);
+        javaIOTeamDAO.save(secondTeam);
+
+        System.out.println("\n========================================================================================\n");
+
+        firstTeam.setName("Team from Russia");
+        rusTeam.remove(developer);
+        firstTeam.setSet(rusTeam);
+        System.out.println("The first team had changed: ");
+        System.out.println(firstTeam);
+        javaIOTeamDAO.update(firstTeam);
+
+        System.out.println("\n========================================================================================\n");
+
+        javaIOTeamDAO.delete(1);
+
+        System.out.println("\n========================================================================================\n");
+
+        Team restoredTeam = javaIOTeamDAO.getById(2L);
+        System.out.println("Get team by ID: ");
+        System.out.println(restoredTeam);
+
+        System.out.println("\n========================================================================================\n");
+
+
+        Set<Team> restoredTeams = javaIOTeamDAO.getAll();
+        System.out.println("Get all teams: ");
+        for (Team team : restoredTeams) System.out.println(team);
+
+
         Team thirdTeam = new Team(3, "Third Team", rusTeam);
         Team fourthTeam = new Team(4, "Fourth Team", usTeam);
         Team fifthTeam = new Team(5, "Fifth Team", rusTeam);
         Team sixthTeam = new Team(6, "Sixth Team", usTeam);
 
-        Set<Team> cheapTeams = new HashSet<>();
-        cheapTeams.add(fifthTeam);
-        cheapTeams.add(thirdTeam);
-        cheapTeams.add(sixthTeam);
-
-        Set<Team> expensiveTeams = new HashSet<>();
-        expensiveTeams.add(secondTeam);
-        expensiveTeams.add(fourthTeam);
-        expensiveTeams.add(fifthTeam);
+        javaIOTeamDAO.save(thirdTeam);
+        javaIOTeamDAO.save(fourthTeam);
+        javaIOTeamDAO.save(fifthTeam);
+        javaIOTeamDAO.save(sixthTeam);
 
 
-        Project siteProject = new Project(1, "Site project", cheapTeams);
-        Project bankingProject = new Project(2, "Banking project", expensiveTeams);
 
 
-        JavaIOProjectDAOImpl javaIOProjectDAO = new JavaIOProjectDAOImpl("projects.txt");
-
-        System.out.println(siteProject);
-        System.out.println();
-        System.out.println(bankingProject);
-
-        System.out.println("\n========================================================================================\n");
-
-        javaIOProjectDAO.save(siteProject);
-        javaIOProjectDAO.save(bankingProject);
-
-        System.out.println("\n========================================================================================\n");
-
-        siteProject.setName("Visit site project");
-        cheapTeams.remove(fifthTeam);
-        siteProject.setSet(cheapTeams);
-        System.out.println("Site project had changed: ");
-        System.out.println(siteProject);
-        javaIOProjectDAO.update(siteProject);
-
-        System.out.println("\n========================================================================================\n");
-
-//        javaIOProjectDAO.delete(1);
-
-        System.out.println("\n========================================================================================\n");
-
-        Project restoredProject = javaIOProjectDAO.getById(2);
-        System.out.println("Get project by ID(2): ");
-        System.out.println(restoredProject);
-
-        System.out.println("\n========================================================================================\n");
-
-
-        Set<Project> restoredProjects = javaIOProjectDAO.getAll();
-        System.out.println("Get all teams: ");
-        for (Project project : restoredProjects) System.out.println(project);
-
-
-        Project testProject = new Project(3, "Test project", cheapTeams);
-        Project fakeProject = new Project(4, "Fake project", expensiveTeams);
-        Project notRealProject = new Project(5, "Not Real project", cheapTeams);
-        Project illusionOfProject = new Project(6, "Illusion of Project project", expensiveTeams);
-
-
-        javaIOProjectDAO.save(testProject);
-        javaIOProjectDAO.save(fakeProject);
-        javaIOProjectDAO.save(notRealProject);
-        javaIOProjectDAO.save(illusionOfProject);
     }
 }
-

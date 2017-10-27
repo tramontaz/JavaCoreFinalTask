@@ -1,3 +1,5 @@
+package test;
+
 import dao.JavaIODeveloperDAOImpl;
 import model.Developer;
 import model.Skill;
@@ -60,7 +62,7 @@ public class DeveloperDAOTest {
         System.out.println();
 
 
-        JavaIODeveloperDAOImpl javaIODeveloperDAO = new JavaIODeveloperDAOImpl("developers.txt");
+        JavaIODeveloperDAOImpl javaIODeveloperDAO = new JavaIODeveloperDAOImpl("/home/dragon/IdeaProjects/JavaCoreFinalTask/src/resources/developers.txt");
 
         javaIODeveloperDAO.save(developer);
 

@@ -1,3 +1,5 @@
+package test;
+
 import dao.JavaIOSkillDAOImpl;
 import model.Developer;
 import model.Skill;
@@ -25,7 +27,7 @@ public class SkillDAOTest {
         Developer developer = new Developer(1, "Ivan", "Ivanov", "Java Junior Developer",
                 skills, new BigDecimal(800));
 
-        JavaIOSkillDAOImpl javaIOSkillDAO = new JavaIOSkillDAOImpl("skills.txt");
+        JavaIOSkillDAOImpl javaIOSkillDAO = new JavaIOSkillDAOImpl("/home/dragon/IdeaProjects/JavaCoreFinalTask/src/resources/skills.txt");
 
         javaIOSkillDAO.save(maven);
         javaIOSkillDAO.save(javaCore);

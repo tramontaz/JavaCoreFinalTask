@@ -9,7 +9,7 @@ import java.util.Set;
 
 public class JavaIOSkillDAOImpl implements SkillDAO {
 
-    private String filePath = "skills.txt";
+    private String filePath = "/home/dragon/IdeaProjects/JavaCoreFinalTask/src/resources/skills.txt";
     private char split;
 
     public JavaIOSkillDAOImpl(String filePath) {
@@ -55,15 +55,15 @@ public class JavaIOSkillDAOImpl implements SkillDAO {
 
     @Override
     public void update(Skill skill) {
-        StringBuilder skillToString = new StringBuilder(skill.getId() + split + skill.getName() + "\n");
         try {
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(filePath)));
-            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(filePath, false));
+            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(filePath, true));
             String line;
             while ((line = bufferedReader.readLine()) != null) {
                 if (line.startsWith(String.valueOf(skill.getId()))) {
-                    bufferedWriter.write(skillToString.toString());
+                    delete(skill.getId());
                 }
+                save(skill);
             }
             bufferedReader.close();
             bufferedWriter.close();
@@ -75,7 +75,7 @@ public class JavaIOSkillDAOImpl implements SkillDAO {
     @Override
     public void delete(long id) {
         File skills = new File(filePath);
-        File newSkills = new File("temp.txt");
+        File newSkills = new File("/home/dragon/IdeaProjects/JavaCoreFinalTask/src/resources/temp.txt");
 
         try {
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(skills)));

@@ -23,7 +23,8 @@ public class JavaIOProjectDAOImpl implements ProjectDAO {
         Skill skillThatWillBeReturned = null;
 
         try {
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream("skills.txt")));
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(
+                    "/home/dragon/IdeaProjects/JavaCoreFinalTask/src/resources/skills.txt")));
             String line;
             String[] skillInStringArray = null;
             while ((line = bufferedReader.readLine()) != null) {
@@ -61,7 +62,8 @@ public class JavaIOProjectDAOImpl implements ProjectDAO {
         Developer developerThatWillBeReturned = null;
 
         try {
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream("developers.txt")));
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(
+                    "/home/dragon/IdeaProjects/JavaCoreFinalTask/src/resources/developers.txt")));
             String line;
             String[] developerInStringArray = null;
             while ((line = bufferedReader.readLine()) != null) {
@@ -101,7 +103,8 @@ public class JavaIOProjectDAOImpl implements ProjectDAO {
         Team teamThatWillBeReturned = null;
 
         try {
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream("teams.txt")));
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(
+                    "/home/dragon/IdeaProjects/JavaCoreFinalTask/src/resources/teams.txt")));
             String line;
             String[] teamInStringArray = null;
             while ((line = bufferedReader.readLine()) != null) {
@@ -205,7 +208,7 @@ public class JavaIOProjectDAOImpl implements ProjectDAO {
     @Override
     public void delete(long id) {
         File projects = new File(filePath);
-        File newProjects = new File("temp.txt");
+        File newProjects = new File("/home/dragon/IdeaProjects/JavaCoreFinalTask/src/resources/temp.txt");
 
         try {
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(projects)));

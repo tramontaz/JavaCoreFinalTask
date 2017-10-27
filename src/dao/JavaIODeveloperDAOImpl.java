@@ -21,7 +21,8 @@ public class JavaIODeveloperDAOImpl implements DeveloperDAO {
         Skill skillThatWillBeReturned = null;
 
         try {
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream("skills.txt")));
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(
+                    "/home/dragon/IdeaProjects/JavaCoreFinalTask/src/resources/skills.txt")));
             String line;
             String[] skillInStringArray = null;
             while ((line = bufferedReader.readLine()) != null) {
@@ -104,17 +105,6 @@ public class JavaIODeveloperDAOImpl implements DeveloperDAO {
 
     @Override
     public void update(Developer developer) {
-//        StringBuilder setSkillsToString = new StringBuilder("{");   //Displays a set of skills as a string
-//        for (Skill skill : developer.getSet()) {
-//            setSkillsToString.append(skill.getId() + "#");
-//        }
-//        setSkillsToString.deleteCharAt(setSkillsToString.length() - 1);
-//        setSkillsToString.append("}");
-//
-//        StringBuilder developerToString = new StringBuilder(developer.getId() + String.valueOf(split) +
-//                developer.getFirstName() + String.valueOf(split) + developer.getLastName() + String.valueOf(split) +
-//                developer.getSpecialty() + String.valueOf(split) + setSkillsToString + String.valueOf(split) +
-//                developer.getSalary() + "\n");
         try {
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(filePath)));
             BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(filePath, true));
@@ -135,7 +125,7 @@ public class JavaIODeveloperDAOImpl implements DeveloperDAO {
     @Override
     public void delete(long id) {
         File developers = new File(filePath);
-        File newDevelopers = new File("temp.txt");
+        File newDevelopers = new File("/home/dragon/IdeaProjects/JavaCoreFinalTask/src/resources/temp.txt");
 
         try {
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(developers)));

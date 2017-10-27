@@ -1,12 +1,13 @@
+package test;
+
 import dao.JavaIOCompanyDAOImpl;
-import dao.JavaIOCustomerDAOImpl;
 import model.*;
 
 import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 
-public class CustomerDAOTest {
+public class CompanyDAOTest {
     public static void main(String[] args) {
         Skill javaCore = new Skill(1, "Java core");
         Skill sql = new Skill(2, "SQL");
@@ -103,47 +104,45 @@ public class CustomerDAOTest {
         losingProjects.add(illusionOfProject);
 
 
-        Customer vpupkin = new Customer(1, "Vasily", "Pupkin",
-                "123 St. Sepastian str. Munhen", successfulProjects);
-        Customer ldupkina = new Customer(2, "Ludmila", "Dupkina",
-                "321 Pirogova str. Moscow", losingProjects);
+        Company google = new Company(1, "Google Inc.", successfulProjects);
+        Company shmoogle = new Company(2, "OOO Smoogle", losingProjects);
 
 
-        JavaIOCustomerDAOImpl javaIOCustomerDAO = new JavaIOCustomerDAOImpl("customers.txt");
+        JavaIOCompanyDAOImpl javaIOCompanyDAO = new JavaIOCompanyDAOImpl("/home/dragon/IdeaProjects/JavaCoreFinalTask/src/resources/allCompany.txt");
 
-        System.out.println(vpupkin);
+        System.out.println(google);
         System.out.println();
-        System.out.println(ldupkina);
+        System.out.println(shmoogle);
 
         System.out.println("\n========================================================================================\n");
 
-        javaIOCustomerDAO.save(vpupkin);
-        javaIOCustomerDAO.save(ldupkina);
+        javaIOCompanyDAO.save(google);
+        javaIOCompanyDAO.save(shmoogle);
 
         System.out.println("\n========================================================================================\n");
 
-        ldupkina.setLastName("Pupkina");
+        shmoogle.setName("Mail.ru");
         losingProjects.remove(fakeProject);
-        ldupkina.setSet(losingProjects);
-        System.out.println("Dupkina had changed: ");
-        System.out.println(ldupkina);
-        javaIOCustomerDAO.update(ldupkina);
-//
-        System.out.println("\n========================================================================================\n");
-
-        javaIOCustomerDAO.delete(2);
+        shmoogle.setSet(losingProjects);
+        System.out.println("Shmoogle had changed: ");
+        System.out.println(shmoogle);
+        javaIOCompanyDAO.update(shmoogle);
 
         System.out.println("\n========================================================================================\n");
 
-        Customer restoredCustomer = javaIOCustomerDAO.getById(1);
-        System.out.println("Get customer by ID(1): ");
-        System.out.println(restoredCustomer);
+        javaIOCompanyDAO.delete(2);
+
+        System.out.println("\n========================================================================================\n");
+
+        Company restoredCompany = javaIOCompanyDAO.getById(1);
+        System.out.println("Get company by ID(1): ");
+        System.out.println(restoredCompany);
 
         System.out.println("\n========================================================================================\n");
 
 
-        Set<Customer> restoredCustomers = javaIOCustomerDAO.getAll();
-        System.out.println("Get all customers: ");
-        for (Customer customer : restoredCustomers) System.out.println(customer);
+        Set<Company> restoredAllCompany = javaIOCompanyDAO.getAll();
+        System.out.println("Get all company: ");
+        for (Company company : restoredAllCompany) System.out.println(company);
     }
 }
