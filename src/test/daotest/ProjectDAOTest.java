@@ -1,14 +1,16 @@
-package test;
+package test.daotest;
 
-import dao.JavaIOCompanyDAOImpl;
-import dao.JavaIOCustomerDAOImpl;
-import model.*;
+import dao.JavaIOProjectDAOImpl;
+import model.Developer;
+import model.Project;
+import model.Skill;
+import model.Team;
 
 import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 
-public class CustomerDAOTest {
+public class ProjectDAOTest {
     public static void main(String[] args) {
         Skill javaCore = new Skill(1, "Java core");
         Skill sql = new Skill(2, "SQL");
@@ -88,64 +90,56 @@ public class CustomerDAOTest {
 
         Project siteProject = new Project(1, "Site project", cheapTeams);
         Project bankingProject = new Project(2, "Banking project", expensiveTeams);
+
+
+        JavaIOProjectDAOImpl javaIOProjectDAO = new JavaIOProjectDAOImpl("/home/dragon/IdeaProjects/JavaCoreFinalTask/src/resources/projects.txt");
+
+        System.out.println(siteProject);
+        System.out.println();
+        System.out.println(bankingProject);
+
+        System.out.println("\n========================================================================================\n");
+
+        javaIOProjectDAO.save(siteProject);
+        javaIOProjectDAO.save(bankingProject);
+
+        System.out.println("\n========================================================================================\n");
+
+        siteProject.setName("Visit site project");
+        cheapTeams.remove(fifthTeam);
+        siteProject.setSet(cheapTeams);
+        System.out.println("Site project had changed: ");
+        System.out.println(siteProject);
+        javaIOProjectDAO.update(siteProject);
+
+        System.out.println("\n========================================================================================\n");
+
+//        javaIOProjectDAO.delete(1);
+
+        System.out.println("\n========================================================================================\n");
+
+        Project restoredProject = javaIOProjectDAO.getById(2);
+        System.out.println("Get project by ID(2): ");
+        System.out.println(restoredProject);
+
+        System.out.println("\n========================================================================================\n");
+
+
+        Set<Project> restoredProjects = javaIOProjectDAO.getAll();
+        System.out.println("Get all teams: ");
+        for (Project project : restoredProjects) System.out.println(project);
+
+
         Project testProject = new Project(3, "Test project", cheapTeams);
         Project fakeProject = new Project(4, "Fake project", expensiveTeams);
         Project notRealProject = new Project(5, "Not Real project", cheapTeams);
         Project illusionOfProject = new Project(6, "Illusion of Project project", expensiveTeams);
 
 
-        Set<Project> successfulProjects = new HashSet<>();
-        successfulProjects.add(siteProject);
-        successfulProjects.add(bankingProject);
-
-        Set<Project> losingProjects = new HashSet<>();
-        losingProjects.add(testProject);
-        losingProjects.add(fakeProject);
-        losingProjects.add(notRealProject);
-        losingProjects.add(illusionOfProject);
-
-
-        Customer vpupkin = new Customer(1, "Vasily", "Pupkin",
-                "123 St. Sepastian str. Munhen", successfulProjects);
-        Customer ldupkina = new Customer(2, "Ludmila", "Dupkina",
-                "321 Pirogova str. Moscow", losingProjects);
-
-
-        JavaIOCustomerDAOImpl javaIOCustomerDAO = new JavaIOCustomerDAOImpl("/home/dragon/IdeaProjects/JavaCoreFinalTask/src/resources/customers.txt");
-
-        System.out.println(vpupkin);
-        System.out.println();
-        System.out.println(ldupkina);
-
-        System.out.println("\n========================================================================================\n");
-
-        javaIOCustomerDAO.save(vpupkin);
-        javaIOCustomerDAO.save(ldupkina);
-
-        System.out.println("\n========================================================================================\n");
-
-        ldupkina.setLastName("Pupkina");
-        losingProjects.remove(fakeProject);
-        ldupkina.setSet(losingProjects);
-        System.out.println("Dupkina had changed: ");
-        System.out.println(ldupkina);
-        javaIOCustomerDAO.update(ldupkina);
-//
-        System.out.println("\n========================================================================================\n");
-
-        javaIOCustomerDAO.delete(2);
-
-        System.out.println("\n========================================================================================\n");
-
-        Customer restoredCustomer = javaIOCustomerDAO.getById(1);
-        System.out.println("Get customer by ID(1): ");
-        System.out.println(restoredCustomer);
-
-        System.out.println("\n========================================================================================\n");
-
-
-        Set<Customer> restoredCustomers = javaIOCustomerDAO.getAll();
-        System.out.println("Get all customers: ");
-        for (Customer customer : restoredCustomers) System.out.println(customer);
+        javaIOProjectDAO.save(testProject);
+        javaIOProjectDAO.save(fakeProject);
+        javaIOProjectDAO.save(notRealProject);
+        javaIOProjectDAO.save(illusionOfProject);
     }
 }
+

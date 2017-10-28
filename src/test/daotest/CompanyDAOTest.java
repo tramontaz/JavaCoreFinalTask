@@ -1,16 +1,13 @@
-package test;
+package test.daotest;
 
-import dao.JavaIOProjectDAOImpl;
-import model.Developer;
-import model.Project;
-import model.Skill;
-import model.Team;
+import dao.JavaIOCompanyDAOImpl;
+import model.*;
 
 import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 
-public class ProjectDAOTest {
+public class CompanyDAOTest {
     public static void main(String[] args) {
         Skill javaCore = new Skill(1, "Java core");
         Skill sql = new Skill(2, "SQL");
@@ -90,56 +87,62 @@ public class ProjectDAOTest {
 
         Project siteProject = new Project(1, "Site project", cheapTeams);
         Project bankingProject = new Project(2, "Banking project", expensiveTeams);
-
-
-        JavaIOProjectDAOImpl javaIOProjectDAO = new JavaIOProjectDAOImpl("/home/dragon/IdeaProjects/JavaCoreFinalTask/src/resources/projects.txt");
-
-        System.out.println(siteProject);
-        System.out.println();
-        System.out.println(bankingProject);
-
-        System.out.println("\n========================================================================================\n");
-
-        javaIOProjectDAO.save(siteProject);
-        javaIOProjectDAO.save(bankingProject);
-
-        System.out.println("\n========================================================================================\n");
-
-        siteProject.setName("Visit site project");
-        cheapTeams.remove(fifthTeam);
-        siteProject.setSet(cheapTeams);
-        System.out.println("Site project had changed: ");
-        System.out.println(siteProject);
-        javaIOProjectDAO.update(siteProject);
-
-        System.out.println("\n========================================================================================\n");
-
-//        javaIOProjectDAO.delete(1);
-
-        System.out.println("\n========================================================================================\n");
-
-        Project restoredProject = javaIOProjectDAO.getById(2);
-        System.out.println("Get project by ID(2): ");
-        System.out.println(restoredProject);
-
-        System.out.println("\n========================================================================================\n");
-
-
-        Set<Project> restoredProjects = javaIOProjectDAO.getAll();
-        System.out.println("Get all teams: ");
-        for (Project project : restoredProjects) System.out.println(project);
-
-
         Project testProject = new Project(3, "Test project", cheapTeams);
         Project fakeProject = new Project(4, "Fake project", expensiveTeams);
         Project notRealProject = new Project(5, "Not Real project", cheapTeams);
         Project illusionOfProject = new Project(6, "Illusion of Project project", expensiveTeams);
 
 
-        javaIOProjectDAO.save(testProject);
-        javaIOProjectDAO.save(fakeProject);
-        javaIOProjectDAO.save(notRealProject);
-        javaIOProjectDAO.save(illusionOfProject);
+        Set<Project> successfulProjects = new HashSet<>();
+        successfulProjects.add(siteProject);
+        successfulProjects.add(bankingProject);
+
+        Set<Project> losingProjects = new HashSet<>();
+        losingProjects.add(testProject);
+        losingProjects.add(fakeProject);
+        losingProjects.add(notRealProject);
+        losingProjects.add(illusionOfProject);
+
+
+        Company google = new Company(1, "Google Inc.", successfulProjects);
+        Company shmoogle = new Company(2, "OOO Smoogle", losingProjects);
+
+
+        JavaIOCompanyDAOImpl javaIOCompanyDAO = new JavaIOCompanyDAOImpl("/home/dragon/IdeaProjects/JavaCoreFinalTask/src/resources/allCompany.txt");
+
+        System.out.println(google);
+        System.out.println();
+        System.out.println(shmoogle);
+
+        System.out.println("\n========================================================================================\n");
+
+        javaIOCompanyDAO.save(google);
+        javaIOCompanyDAO.save(shmoogle);
+
+        System.out.println("\n========================================================================================\n");
+
+        shmoogle.setName("Mail.ru");
+        losingProjects.remove(fakeProject);
+        shmoogle.setSet(losingProjects);
+        System.out.println("Shmoogle had changed: ");
+        System.out.println(shmoogle);
+        javaIOCompanyDAO.update(shmoogle);
+
+        System.out.println("\n========================================================================================\n");
+
+        javaIOCompanyDAO.delete(2);
+
+        System.out.println("\n========================================================================================\n");
+
+        Company restoredCompany = javaIOCompanyDAO.getById(1);
+        System.out.println("Get company by ID(1): ");
+        System.out.println(restoredCompany);
+
+        System.out.println("\n========================================================================================\n");
+
+
+        Set<Company> restoredAllCompany = javaIOCompanyDAO.getAll();
+        System.out.println("Get all company: ");
+        for (Company company : restoredAllCompany) System.out.println(company);
     }
 }
-

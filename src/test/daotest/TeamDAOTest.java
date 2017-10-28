@@ -1,4 +1,4 @@
-package test;
+package test.daotest;
 
 import dao.JavaIOTeamDAOImpl;
 import model.Developer;
