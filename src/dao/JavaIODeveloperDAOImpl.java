@@ -26,7 +26,8 @@ public class JavaIODeveloperDAOImpl implements DeveloperDAO {
             String line;
             String[] skillInStringArray = null;
             while ((line = bufferedReader.readLine()) != null) {
-                if (line.startsWith(String.valueOf(id))) {
+                String substring = line.substring(0, line.indexOf(','));
+                if (substring.equals(String.valueOf(id))) {
                     skillInStringArray = line.split(String.valueOf(split));
                     break;
                 }
@@ -84,7 +85,8 @@ public class JavaIODeveloperDAOImpl implements DeveloperDAO {
             String idString = String.valueOf(developer.getId());
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
             while ((line = bufferedReader.readLine()) != null) {
-                if (line.startsWith(idString)) {
+                String substring = line.substring(0, line.indexOf(','));
+                if (substring.equals(idString)) {
                     stringBuilder.append(line);
                 }
             }
@@ -110,7 +112,8 @@ public class JavaIODeveloperDAOImpl implements DeveloperDAO {
             BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(filePath, true));
             String line;
             while ((line = bufferedReader.readLine()) != null) {
-                if (line.startsWith(String.valueOf(developer.getId()))) {
+                String substring = line.substring(0, line.indexOf(','));
+                if (substring.equals(String.valueOf(developer.getId()))) {
                     delete(developer.getId());
                 }
                 save(developer);
@@ -132,7 +135,8 @@ public class JavaIODeveloperDAOImpl implements DeveloperDAO {
             BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(newDevelopers, true));
             String line;
             while ((line = bufferedReader.readLine()) != null) {
-                if (!line.startsWith(String.valueOf(id))) {
+                String substring = line.substring(0, line.indexOf(','));
+                if (substring.equals(String.valueOf(id))) {
                     bufferedWriter.write(line);
                     bufferedWriter.newLine();
                 }
@@ -155,7 +159,8 @@ public class JavaIODeveloperDAOImpl implements DeveloperDAO {
             String line;
             String[] developerInStringArray = null;
             while ((line = bufferedReader.readLine()) != null) {
-                if (line.startsWith(String.valueOf(id))) {
+                String substring = line.substring(0, line.indexOf(','));
+                if (substring.equals(String.valueOf(id))) {
                     developerInStringArray = line.split(String.valueOf(split));
                     break;
                 }
