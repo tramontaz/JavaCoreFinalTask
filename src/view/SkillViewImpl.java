@@ -16,6 +16,8 @@ public class SkillViewImpl implements SkillView {
         boolean trigger = true;
 
         while (trigger) {
+
+            //ID
             System.out.print("Enter Id or \"0\" to exit: ");
             try {
                 id = Long.parseLong(in.readLine());
@@ -34,7 +36,9 @@ public class SkillViewImpl implements SkillView {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            System.out.print("Enter the name or \"0\" to exit: ");
+
+            //name
+            System.out.print("Enter the name (must not be empty) or \"0\" to exit: ");
             try {
                 name = in.readLine();
                 if (name.equals("0")) System.exit(0);
@@ -75,7 +79,8 @@ public class SkillViewImpl implements SkillView {
                     "/home/dragon/IdeaProjects/JavaCoreFinalTask/src/resources/skills.txt")));
             String line;
             while ((line = bufferedReader.readLine()) != null) {
-                if (line.startsWith(String.valueOf(id))) {
+                String substring = line.substring(0, line.indexOf(','));
+                if (substring.equals(String.valueOf(id))) {
                     return false;
                 }
             }

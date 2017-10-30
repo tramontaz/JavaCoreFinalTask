@@ -3,4 +3,3 @@
 4,John,Weak,Java Middle Developer,{1#4#6#3#5#2},1800
 5,Mary,Key,Java Middle-sec-grade Developer,{1#4#6#3#5#2#7},1950
 1,Konchita,Ivanov,Java Junior Developer,{1#3#2},800
-11,Oleg,Deryavko,Oracle Developer,{1#4#3#5#2},8000

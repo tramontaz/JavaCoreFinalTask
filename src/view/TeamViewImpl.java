@@ -1,8 +1,9 @@
 package view;
 
-import dao.JavaIODeveloperDAOImpl;
+import dao.JavaIOTeamDAOImpl;
 import model.Developer;
 import model.Skill;
+import model.Team;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -12,18 +13,14 @@ import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 
-public class DeveloperViewImpl implements DeveloperView {
-
+public class TeamViewImpl implements TeamView {
     @Override
-    public void saveDeveloper() {
+    public void saveTeam() {
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
         long id = 0;
-        String firstName = null;
-        String lastName = null;
-        String specialty = null;
-        Set<Skill> skillSet;
-        BigDecimal salary = null;
-        Developer developer;
+        String name = null;
+        Set<Developer> developersSet;
+        Team team;
         boolean trigger = true;
 
         while (trigger) {
@@ -47,46 +44,28 @@ public class DeveloperViewImpl implements DeveloperView {
                 e.printStackTrace();
             }
 
-            //First name
-            System.out.print("Enter the first name (must not be empty) or \"0\" to exit: ");
+            //name
+            System.out.print("Enter the name (must not be empty) or \"0\" to exit: ");
             try {
-                firstName = in.readLine();
-                if (firstName.equals("0")) System.exit(0);
+                name = in.readLine();
+                if (name.equals("0")) System.exit(0);
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
-            //Last name
-            System.out.print("Enter the last name (must not be empty) or \"0\" to exit: ");
-            try {
-                lastName = in.readLine();
-                if (lastName.equals("0")) System.exit(0);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            //Specialty
-            System.out.print("Enter the specialty (must not be empty) or \"0\" to exit: ");
-            try {
-                specialty = in.readLine();
-                if (specialty.equals("0")) System.exit(0);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            //Set skills
-            skillSet = new HashSet<>();
-            String skillsIDsToString;
-            boolean successfulEntering = true;
+            //Set teams
+            developersSet = new HashSet<>();
+            String developersIDsToString;
+            boolean successfulEntering;
             boolean isSomethingWrong = true;
-            System.out.print("Please enter developer's skill's ids split by ',' and press 'Enter' OR \"0\" to exit: ");
+            System.out.print("Please enter developer's ids split by ',' and press 'Enter' OR \"0\" to exit: ");
             while (isSomethingWrong) {
                 successfulEntering = true;
                 try {
-                    skillsIDsToString = in.readLine();
+                    developersIDsToString = in.readLine();
 
-                    String[] skillsInStringArray = skillsIDsToString.split(",");
-                    for (String integer : skillsInStringArray) {
+                    String[] developersInStringArray = developersIDsToString.split(",");
+                    for (String integer : developersInStringArray) {
                         if (!(integer.matches("([+])?\\d+"))) {
                             System.err.println("You made a mistake when entered the IDs, try again.");
                             successfulEntering = false;
@@ -95,76 +74,40 @@ public class DeveloperViewImpl implements DeveloperView {
                         }
                     }
                     if (successfulEntering) {
-                        Long[] ids = new Long[skillsInStringArray.length];
+                        Long[] ids = new Long[developersInStringArray.length];
                         for (int i = 0; i < ids.length; i++) {
-                            ids[i] = Long.parseLong(skillsInStringArray[i]);
+                            ids[i] = Long.parseLong(developersInStringArray[i]);
                         }
 
                         try {
-                            for (Long identification : ids) {
-                                skillSet.add(getSkillById(identification));
-                            }
-                            isSomethingWrong = false;
+                        for (Long identification : ids) {
+                            developersSet.add(getDeveloperById(identification));
+                        }
+                        isSomethingWrong = false;
                         } catch (NullPointerException e) {
-                        System.err.println("There is no such a project!!! Please try again");
-                    }
-
+                            System.err.println("There is no such a project!!! Please try again");
+                        }
                     }
 
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+
             }
 
-            //Salary
-            isSomethingWrong = true;
-            while (isSomethingWrong) {
-                System.out.print("Enter Salary or \"0\" to exit: ");
-                try {
-                    String line = in.readLine();
-                    if (!(line.matches("([-+])?\\d+"))) {
-                        System.err.println("You made a mistake when entered the salary, try again.");
-                        continue;
-                    }
-                    BigDecimal temp = new BigDecimal(line);
-                    BigDecimal abortOperation = new BigDecimal(0);
-                    switch (temp.compareTo(abortOperation)) {
-                        case 0:
-                            isSomethingWrong = false;
-                            System.exit(0);
-                            break;
-                        case -1:
-                            System.err.println("\nID should be only natural number (more than '0')");
-                            continue;
-                        case 1:
-                            salary = temp;
-                            isSomethingWrong = false;
-                            break;
-                    }
-                } catch (NumberFormatException e) {
-                    System.err.println("Error! ID can be only a number!!!!");
-                    break;
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-
-
-            if (firstName != null && !firstName.isEmpty() &&
-                    lastName != null && !lastName.isEmpty() &&
-                    specialty != null && !specialty.isEmpty() && successfulEntering) {
-                developer = new Developer(id, firstName, lastName, specialty, skillSet, salary);
+            if (name != null && !name.isEmpty()) {
+                team = new Team(id, name, developersSet);
             } else {
                 System.err.println("Please check your input...");
                 continue;
-
             }
 
-            JavaIODeveloperDAOImpl javaIODeveloperDAO = new JavaIODeveloperDAOImpl(
-                    "/home/dragon/IdeaProjects/JavaCoreFinalTask/src/resources/developers.txt");
 
-            javaIODeveloperDAO.save(developer);
-            System.out.println("Developer: " + javaIODeveloperDAO.getById(id).toString());
+            JavaIOTeamDAOImpl javaIOTeamDAO = new JavaIOTeamDAOImpl(
+                    "/home/dragon/IdeaProjects/JavaCoreFinalTask/src/resources/teams.txt");
+
+            javaIOTeamDAO.save(team);
+            System.out.println("Team: " + javaIOTeamDAO.getById(id).toString());
             System.out.println("Enter anything you want if you want to continue OR enter \"done!!!\" if you finished.");
             try {
                 if (in.readLine().equals("done!!!")) trigger = false;
@@ -183,7 +126,7 @@ public class DeveloperViewImpl implements DeveloperView {
         BufferedReader bufferedReader;
         try {
             bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(
-                    "/home/dragon/IdeaProjects/JavaCoreFinalTask/src/resources/developers.txt")));
+                    "/home/dragon/IdeaProjects/JavaCoreFinalTask/src/resources/teams.txt")));
             String line;
             while ((line = bufferedReader.readLine()) != null) {
                 String substring = line.substring(0, line.indexOf(','));
@@ -220,7 +163,53 @@ public class DeveloperViewImpl implements DeveloperView {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        if (skillThatWillBeReturned != null) return skillThatWillBeReturned;
+
+        return skillThatWillBeReturned;
+    }
+
+    private Set<Skill> restoredSkills(String line) {
+        String subString = line.substring(line.indexOf("{") + 1, line.indexOf("}"));
+        String[] developersInStringArray = subString.split("#");
+        Long[] ids = new Long[developersInStringArray.length];
+        for (int i = 0; i < ids.length; i++) {
+            ids[i] = Long.parseLong(developersInStringArray[i]);
+        }
+
+        Set<Skill> restoredSkills = new HashSet<>();
+
+        for (Long id : ids) {
+            restoredSkills.add(getSkillById(id));
+        }
+        return restoredSkills;
+    }
+
+    private Developer getDeveloperById(long id) {
+        Developer developerThatWillBeReturned = null;
+
+        try {
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(
+                    "/home/dragon/IdeaProjects/JavaCoreFinalTask/src/resources/developers.txt")));
+            String line;
+            String[] developerInStringArray = null;
+            while ((line = bufferedReader.readLine()) != null) {
+                String substring = line.substring(0, line.indexOf(','));
+                if (substring.equals(String.valueOf(id))) {
+                    developerInStringArray = line.split(",");
+                    break;
+                }
+            }
+            bufferedReader.close();
+            if (developerInStringArray != null) {
+                developerThatWillBeReturned = new Developer(Long.parseLong(developerInStringArray[0]),
+                        developerInStringArray[1], developerInStringArray[2], developerInStringArray[3],
+                        restoredSkills(developerInStringArray[4]), new BigDecimal(developerInStringArray[5]));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        if (developerThatWillBeReturned != null) return developerThatWillBeReturned;
         else throw new NullPointerException();
     }
+
 }

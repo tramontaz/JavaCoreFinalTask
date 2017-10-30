@@ -33,7 +33,9 @@ public class JavaIODeveloperDAOImpl implements DeveloperDAO {
                 }
             }
             bufferedReader.close();
-            skillThatWillBeReturned = new Skill(Long.parseLong(skillInStringArray[0]), skillInStringArray[1]);
+            if (skillInStringArray != null) {
+                skillThatWillBeReturned = new Skill(Long.parseLong(skillInStringArray[0]), skillInStringArray[1]);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -70,7 +72,7 @@ public class JavaIODeveloperDAOImpl implements DeveloperDAO {
 
         StringBuilder setSkillsToString = new StringBuilder("{");   //Displays a set of skills as a string
         for (Skill skill : developer.getSet()) {
-            setSkillsToString.append(skill.getId() + "#");
+            setSkillsToString.append(skill.getId()).append("#");
         }
         setSkillsToString.deleteCharAt(setSkillsToString.length() - 1);
         setSkillsToString.append("}");
@@ -136,7 +138,7 @@ public class JavaIODeveloperDAOImpl implements DeveloperDAO {
             String line;
             while ((line = bufferedReader.readLine()) != null) {
                 String substring = line.substring(0, line.indexOf(','));
-                if (substring.equals(String.valueOf(id))) {
+                if (!substring.equals(String.valueOf(id))) {
                     bufferedWriter.write(line);
                     bufferedWriter.newLine();
                 }
@@ -166,9 +168,11 @@ public class JavaIODeveloperDAOImpl implements DeveloperDAO {
                 }
             }
             bufferedReader.close();
-            developerThatWillBeReturned = new Developer(Long.parseLong(developerInStringArray[0]),
-                    developerInStringArray[1], developerInStringArray[2], developerInStringArray[3],
-                    restoredSkills(developerInStringArray[4]), new BigDecimal(developerInStringArray[5]));
+            if (developerInStringArray != null) {
+                developerThatWillBeReturned = new Developer(Long.parseLong(developerInStringArray[0]),
+                        developerInStringArray[1], developerInStringArray[2], developerInStringArray[3],
+                        restoredSkills(developerInStringArray[4]), new BigDecimal(developerInStringArray[5]));
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }

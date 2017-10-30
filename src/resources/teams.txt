@@ -3,3 +3,5 @@
 4,Fourth Team,{5#4}
 5,Fifth Team,{3#2}
 6,Sixth Team,{5#4}
+1,Team from Russia,{3#2}
+7,Outsource Team,{3#1#5}

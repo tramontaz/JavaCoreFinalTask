@@ -1,6 +1,5 @@
 package dao;
 
-import model.Developer;
 import model.Skill;
 
 import java.io.*;
@@ -34,7 +33,8 @@ public class JavaIOSkillDAOImpl implements SkillDAO {
             String idString = String.valueOf(skill.getId());
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
             while ((line = bufferedReader.readLine()) != null) {
-                if (line.startsWith(idString)) {
+                String substring = line.substring(0, line.indexOf(','));
+                if (substring.equals(idString)) {
                     stringBuilder.append(line);
                 }
             }
@@ -60,7 +60,8 @@ public class JavaIOSkillDAOImpl implements SkillDAO {
             BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(filePath, true));
             String line;
             while ((line = bufferedReader.readLine()) != null) {
-                if (line.startsWith(String.valueOf(skill.getId()))) {
+                String substring = line.substring(0, line.indexOf(','));
+                if (substring.equals(String.valueOf(skill.getId()))) {
                     delete(skill.getId());
                 }
                 save(skill);
@@ -82,7 +83,8 @@ public class JavaIOSkillDAOImpl implements SkillDAO {
             BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(newSkills, true));
             String line;
             while ((line = bufferedReader.readLine()) != null) {
-                if (!line.startsWith(String.valueOf(id))) {
+                String substring = line.substring(0, line.indexOf(','));
+                if (!substring.equals(String.valueOf(id))) {
                     bufferedWriter.write(line);
                     bufferedWriter.newLine();
                 }
@@ -105,13 +107,16 @@ public class JavaIOSkillDAOImpl implements SkillDAO {
             String line;
             String[] skillInStringArray = null;
             while ((line = bufferedReader.readLine()) != null) {
-                if (line.startsWith(String.valueOf(id))) {
+                String substring = line.substring(0, line.indexOf(','));
+                if (substring.equals(String.valueOf(id))) {
                     skillInStringArray = line.split(String.valueOf(split));
                     break;
                 }
             }
             bufferedReader.close();
-            skillThatWillBeReturned = new Skill(Long.parseLong(skillInStringArray[0]), skillInStringArray[1]);
+            if (skillInStringArray != null) {
+                skillThatWillBeReturned = new Skill(Long.parseLong(skillInStringArray[0]), skillInStringArray[1]);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }

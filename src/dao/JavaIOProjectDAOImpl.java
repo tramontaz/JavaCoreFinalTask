@@ -28,13 +28,16 @@ public class JavaIOProjectDAOImpl implements ProjectDAO {
             String line;
             String[] skillInStringArray = null;
             while ((line = bufferedReader.readLine()) != null) {
-                if (line.startsWith(String.valueOf(id))) {
+                String substring = line.substring(0, line.indexOf(','));
+                if (substring.equals(String.valueOf(id))) {
                     skillInStringArray = line.split(String.valueOf(split));
                     break;
                 }
             }
             bufferedReader.close();
-            skillThatWillBeReturned = new Skill(Long.parseLong(skillInStringArray[0]), skillInStringArray[1]);
+            if (skillInStringArray != null) {
+                skillThatWillBeReturned = new Skill(Long.parseLong(skillInStringArray[0]), skillInStringArray[1]);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -67,15 +70,18 @@ public class JavaIOProjectDAOImpl implements ProjectDAO {
             String line;
             String[] developerInStringArray = null;
             while ((line = bufferedReader.readLine()) != null) {
-                if (line.startsWith(String.valueOf(id))) {
+                String substring = line.substring(0, line.indexOf(','));
+                if (substring.equals(String.valueOf(id))) {
                     developerInStringArray = line.split(String.valueOf(split));
                     break;
                 }
             }
             bufferedReader.close();
-            developerThatWillBeReturned = new Developer(Long.parseLong(developerInStringArray[0]),
-                    developerInStringArray[1], developerInStringArray[2], developerInStringArray[3],
-                    restoredSkills(developerInStringArray[4]), new BigDecimal(developerInStringArray[5]));
+            if (developerInStringArray != null) {
+                developerThatWillBeReturned = new Developer(Long.parseLong(developerInStringArray[0]),
+                        developerInStringArray[1], developerInStringArray[2], developerInStringArray[3],
+                        restoredSkills(developerInStringArray[4]), new BigDecimal(developerInStringArray[5]));
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -108,14 +114,17 @@ public class JavaIOProjectDAOImpl implements ProjectDAO {
             String line;
             String[] teamInStringArray = null;
             while ((line = bufferedReader.readLine()) != null) {
-                if (line.startsWith(String.valueOf(id))) {
+                String substring = line.substring(0, line.indexOf(','));
+                if (substring.equals(String.valueOf(id))) {
                     teamInStringArray = line.split(String.valueOf(split));
                     break;
                 }
             }
             bufferedReader.close();
-            teamThatWillBeReturned = new Team(Long.parseLong(teamInStringArray[0]),
-                    teamInStringArray[1], restoredDevelopers(teamInStringArray[2]));
+            if (teamInStringArray != null) {
+                teamThatWillBeReturned = new Team(Long.parseLong(teamInStringArray[0]),
+                        teamInStringArray[1], restoredDevelopers(teamInStringArray[2]));
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -154,7 +163,7 @@ public class JavaIOProjectDAOImpl implements ProjectDAO {
 
         StringBuilder setTeamsToString = new StringBuilder("{");   //Displays a set of skills as a string
         for (Team team : project.getSet()) {
-            setTeamsToString.append(team.getId() + "#");
+            setTeamsToString.append(team.getId()).append("#");
         }
         setTeamsToString.deleteCharAt(setTeamsToString.length() - 1);
         setTeamsToString.append("}");
@@ -167,7 +176,8 @@ public class JavaIOProjectDAOImpl implements ProjectDAO {
             String idString = String.valueOf(project.getId());
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
             while ((line = bufferedReader.readLine()) != null) {
-                if (line.startsWith(idString)) {
+                String substring = line.substring(0, line.indexOf(','));
+                if (substring.equals(idString)) {
                     stringBuilder.append(line);
                 }
             }
@@ -193,7 +203,8 @@ public class JavaIOProjectDAOImpl implements ProjectDAO {
             BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(filePath, true));
             String line;
             while ((line = bufferedReader.readLine()) != null) {
-                if (line.startsWith(String.valueOf(project.getId()))) {
+                String substring = line.substring(0, line.indexOf(','));
+                if (substring.equals(String.valueOf(project.getId()))) {
                     delete(project.getId());
                 }
                 save(project);
@@ -215,7 +226,8 @@ public class JavaIOProjectDAOImpl implements ProjectDAO {
             BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(newProjects, true));
             String line;
             while ((line = bufferedReader.readLine()) != null) {
-                if (!line.startsWith(String.valueOf(id))) {
+                String substring = line.substring(0, line.indexOf(','));
+                if (!substring.equals(String.valueOf(id))) {
                     bufferedWriter.write(line);
                     bufferedWriter.newLine();
                 }
@@ -238,14 +250,17 @@ public class JavaIOProjectDAOImpl implements ProjectDAO {
             String line;
             String[] projectInStringArray = null;
             while ((line = bufferedReader.readLine()) != null) {
-                if (line.startsWith(String.valueOf(id))) {
+                String substring = line.substring(0, line.indexOf(','));
+                if (substring.equals(String.valueOf(id))) {
                     projectInStringArray = line.split(String.valueOf(split));
                     break;
                 }
             }
             bufferedReader.close();
-            projectThatWillBeReturned = new Project(Long.parseLong(projectInStringArray[0]),
-                    projectInStringArray[1], restoredTeams(projectInStringArray[2]));
+            if (projectInStringArray != null) {
+                projectThatWillBeReturned = new Project(Long.parseLong(projectInStringArray[0]),
+                        projectInStringArray[1], restoredTeams(projectInStringArray[2]));
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }

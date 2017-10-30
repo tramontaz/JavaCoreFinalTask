@@ -27,13 +27,16 @@ public class JavaIOTeamDAOImpl implements TeamDAO {
             String line;
             String[] skillInStringArray = null;
             while ((line = bufferedReader.readLine()) != null) {
-                if (line.startsWith(String.valueOf(id))) {
+                String substring = line.substring(0, line.indexOf(','));
+                if (substring.equals(String.valueOf(id))) {
                     skillInStringArray = line.split(String.valueOf(split));
                     break;
                 }
             }
             bufferedReader.close();
-            skillThatWillBeReturned = new Skill(Long.parseLong(skillInStringArray[0]), skillInStringArray[1]);
+            if (skillInStringArray != null) {
+                skillThatWillBeReturned = new Skill(Long.parseLong(skillInStringArray[0]), skillInStringArray[1]);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -66,15 +69,18 @@ public class JavaIOTeamDAOImpl implements TeamDAO {
             String line;
             String[] developerInStringArray = null;
             while ((line = bufferedReader.readLine()) != null) {
-                if (line.startsWith(String.valueOf(id))) {
+                String substring = line.substring(0, line.indexOf(','));
+                if (substring.equals(String.valueOf(id))) {
                     developerInStringArray = line.split(String.valueOf(split));
                     break;
                 }
             }
             bufferedReader.close();
-            developerThatWillBeReturned = new Developer(Long.parseLong(developerInStringArray[0]),
-                    developerInStringArray[1], developerInStringArray[2], developerInStringArray[3],
-                    restoredSkills(developerInStringArray[4]), new BigDecimal(developerInStringArray[5]));
+            if (developerInStringArray != null) {
+                developerThatWillBeReturned = new Developer(Long.parseLong(developerInStringArray[0]),
+                        developerInStringArray[1], developerInStringArray[2], developerInStringArray[3],
+                        restoredSkills(developerInStringArray[4]), new BigDecimal(developerInStringArray[5]));
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -113,7 +119,7 @@ public class JavaIOTeamDAOImpl implements TeamDAO {
 
         StringBuilder setDevelopersToString = new StringBuilder("{");   //Displays a set of skills as a string
         for (Developer developer : team.getSet()) {
-            setDevelopersToString.append(developer.getId() + "#");
+            setDevelopersToString.append(developer.getId()).append("#");
         }
         setDevelopersToString.deleteCharAt(setDevelopersToString.length() - 1);
         setDevelopersToString.append("}");
@@ -126,7 +132,8 @@ public class JavaIOTeamDAOImpl implements TeamDAO {
             String idString = String.valueOf(team.getId());
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
             while ((line = bufferedReader.readLine()) != null) {
-                if (line.startsWith(idString)) {
+                String substring = line.substring(0, line.indexOf(','));
+                if (substring.equals(idString)) {
                     stringBuilder.append(line);
                 }
             }
@@ -152,7 +159,8 @@ public class JavaIOTeamDAOImpl implements TeamDAO {
             BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(filePath, true));
             String line;
             while ((line = bufferedReader.readLine()) != null) {
-                if (line.startsWith(String.valueOf(team.getId()))) {
+                String substring = line.substring(0, line.indexOf(','));
+                if (substring.equals(String.valueOf(team.getId()))) {
                     delete(team.getId());
                 }
                 save(team);
@@ -174,7 +182,8 @@ public class JavaIOTeamDAOImpl implements TeamDAO {
             BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(newTeams, true));
             String line;
             while ((line = bufferedReader.readLine()) != null) {
-                if (!line.startsWith(String.valueOf(id))) {
+                String substring = line.substring(0, line.indexOf(','));
+                if (!substring.equals(String.valueOf(id))) {
                     bufferedWriter.write(line);
                     bufferedWriter.newLine();
                 }
@@ -197,14 +206,17 @@ public class JavaIOTeamDAOImpl implements TeamDAO {
             String line;
             String[] teamInStringArray = null;
             while ((line = bufferedReader.readLine()) != null) {
-                if (line.startsWith(String.valueOf(id))) {
+                String substring = line.substring(0, line.indexOf(','));
+                if (substring.equals(String.valueOf(id))) {
                     teamInStringArray = line.split(String.valueOf(split));
                     break;
                 }
             }
             bufferedReader.close();
-            teamThatWillBeReturned = new Team(Long.parseLong(teamInStringArray[0]),
-                    teamInStringArray[1], restoredDevelopers(teamInStringArray[2]));
+            if (teamInStringArray != null) {
+                teamThatWillBeReturned = new Team(Long.parseLong(teamInStringArray[0]),
+                        teamInStringArray[1], restoredDevelopers(teamInStringArray[2]));
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }

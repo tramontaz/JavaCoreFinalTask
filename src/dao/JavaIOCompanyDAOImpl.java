@@ -25,13 +25,16 @@ public class JavaIOCompanyDAOImpl implements CompanyDAO {
             String line;
             String[] skillInStringArray = null;
             while ((line = bufferedReader.readLine()) != null) {
-                if (line.startsWith(String.valueOf(id))) {
+                String substring = line.substring(0, line.indexOf(','));
+                if (substring.equals(String.valueOf(id))) {
                     skillInStringArray = line.split(String.valueOf(split));
                     break;
                 }
             }
             bufferedReader.close();
-            skillThatWillBeReturned = new Skill(Long.parseLong(skillInStringArray[0]), skillInStringArray[1]);
+            if (skillInStringArray != null) {
+                skillThatWillBeReturned = new Skill(Long.parseLong(skillInStringArray[0]), skillInStringArray[1]);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -64,15 +67,18 @@ public class JavaIOCompanyDAOImpl implements CompanyDAO {
             String line;
             String[] developerInStringArray = null;
             while ((line = bufferedReader.readLine()) != null) {
-                if (line.startsWith(String.valueOf(id))) {
+                String substring = line.substring(0, line.indexOf(','));
+                if (substring.equals(String.valueOf(id))) {
                     developerInStringArray = line.split(String.valueOf(split));
                     break;
                 }
             }
             bufferedReader.close();
-            developerThatWillBeReturned = new Developer(Long.parseLong(developerInStringArray[0]),
-                    developerInStringArray[1], developerInStringArray[2], developerInStringArray[3],
-                    restoredSkills(developerInStringArray[4]), new BigDecimal(developerInStringArray[5]));
+            if (developerInStringArray != null) {
+                developerThatWillBeReturned = new Developer(Long.parseLong(developerInStringArray[0]),
+                        developerInStringArray[1], developerInStringArray[2], developerInStringArray[3],
+                        restoredSkills(developerInStringArray[4]), new BigDecimal(developerInStringArray[5]));
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -105,12 +111,14 @@ public class JavaIOCompanyDAOImpl implements CompanyDAO {
             String line;
             String[] teamInStringArray = null;
             while ((line = bufferedReader.readLine()) != null) {
-                if (line.startsWith(String.valueOf(id))) {
+                String substring = line.substring(0, line.indexOf(','));
+                if (substring.equals(String.valueOf(id))) {
                     teamInStringArray = line.split(String.valueOf(split));
                     break;
                 }
             }
             bufferedReader.close();
+            assert teamInStringArray != null;
             teamThatWillBeReturned = new Team(Long.parseLong(teamInStringArray[0]),
                     teamInStringArray[1], restoredDevelopers(teamInStringArray[2]));
         } catch (IOException e) {
@@ -146,14 +154,17 @@ public class JavaIOCompanyDAOImpl implements CompanyDAO {
             String line;
             String[] projectInStringArray = null;
             while ((line = bufferedReader.readLine()) != null) {
-                if (line.startsWith(String.valueOf(id))) {
+                String substring = line.substring(0, line.indexOf(','));
+                if (substring.equals(String.valueOf(id))) {
                     projectInStringArray = line.split(String.valueOf(split));
                     break;
                 }
             }
             bufferedReader.close();
-            projectThatWillBeReturned = new Project(Long.parseLong(projectInStringArray[0]),
-                    projectInStringArray[1], restoredTeams(projectInStringArray[2]));
+            if (projectInStringArray != null) {
+                projectThatWillBeReturned = new Project(Long.parseLong(projectInStringArray[0]),
+                        projectInStringArray[1], restoredTeams(projectInStringArray[2]));
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -191,7 +202,7 @@ public class JavaIOCompanyDAOImpl implements CompanyDAO {
 
         StringBuilder setProjectsToString = new StringBuilder("{");   //Displays a set of skills as a string
         for (Project project : company.getSet()) {
-            setProjectsToString.append(project.getId() + "#");
+            setProjectsToString.append(project.getId()).append("#");
         }
         setProjectsToString.deleteCharAt(setProjectsToString.length() - 1);
         setProjectsToString.append("}");
@@ -204,7 +215,8 @@ public class JavaIOCompanyDAOImpl implements CompanyDAO {
             String idString = String.valueOf(company.getId());
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
             while ((line = bufferedReader.readLine()) != null) {
-                if (line.startsWith(idString)) {
+                String substring = line.substring(0, line.indexOf(','));
+                if (substring.equals(idString)) {
                     stringBuilder.append(line);
                 }
             }
@@ -230,7 +242,8 @@ public class JavaIOCompanyDAOImpl implements CompanyDAO {
             BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(filePath, true));
             String line;
             while ((line = bufferedReader.readLine()) != null) {
-                if (line.startsWith(String.valueOf(company.getId()))) {
+                String substring = line.substring(0, line.indexOf(','));
+                if (substring.equals(String.valueOf(company.getId()))) {
                     delete(company.getId());
                 }
                 save(company);
@@ -252,7 +265,8 @@ public class JavaIOCompanyDAOImpl implements CompanyDAO {
             BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(newAllCompany, true));
             String line;
             while ((line = bufferedReader.readLine()) != null) {
-                if (!line.startsWith(String.valueOf(id))) {
+                String substring = line.substring(0, line.indexOf(','));
+                if (!substring.equals(String.valueOf(id))) {
                     bufferedWriter.write(line);
                     bufferedWriter.newLine();
                 }
@@ -275,12 +289,14 @@ public class JavaIOCompanyDAOImpl implements CompanyDAO {
             String line;
             String[] allCompanyInStringArray = null;
             while ((line = bufferedReader.readLine()) != null) {
-                if (line.startsWith(String.valueOf(id))) {
+                String substring = line.substring(0, line.indexOf(','));
+                if (!substring.equals(String.valueOf(id))) {
                     allCompanyInStringArray = line.split(String.valueOf(split));
                     break;
                 }
             }
             bufferedReader.close();
+            assert allCompanyInStringArray != null;
             companyThatWillBeReturned = new Company(Long.parseLong(allCompanyInStringArray[0]),
                     allCompanyInStringArray[1], restoreProjects(allCompanyInStringArray[2]));
         } catch (IOException e) {
